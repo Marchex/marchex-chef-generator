@@ -7,7 +7,7 @@
 # Load chef-vault in order to access encrypted data bag
 include_recipe 'chef-vault'
 # Load encrypted data bag
-secret_credentials = chef_vault_item('my_encrypted_data_bag', 'my_encrypted_data_bag')
+db_credentials = ChefVault::Item.load('<%= cookbook_name %>', 'database_credentials')
 
 # Create file with secrets
 template "/tmp/data_bag_secrets.conf" do
@@ -16,7 +16,7 @@ template "/tmp/data_bag_secrets.conf" do
   mode      '0400'
   sensitive true
   action    :create
-  variables(  username: secret_credentials['username'],
-              password: secret_credentials['password'] )
+  variables(  username: db_credentials['username'],
+              password: db_credentials['password'] )
 end
 <% end -%>

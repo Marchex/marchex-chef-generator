@@ -2,3 +2,24 @@
 
 TODO: Enter the cookbook description here.
 
+<% if defined?(include_encrypted_data_bag_examples) %>
+
+We use [chef-vault](https://github.com/Nordstrom/chef-vault) to manage our secrets within cookbooks.
+
+Here's an example of creating a vault entry with the required attributes using knife:
+
+TODO: Update with valid entries for your cookbook/recipe.
+
+  knife vault create <%= cookbook_name %> db_credentials '{ "username": "foo", "password": "bar" }'
+  -S "role:my-awesome-role"
+  -A "my_username" --mode client
+
+The -S argument is the standard chef SOLR search for clients (e.g. fqdn:foo.marchex.com). To see which nodes will match
+a given string, do a knife search node "<search string>" with the same argument. Each node returned from the search
+query will be given access to these attributes. Note: new nodes are not automatically allowed access. So, in the above
+example, if the 'my-awesome-role' role is applied to a node after the vault is created, it will not be able to use these
+attributes until the vault is updated (which will encrypt the vault in such a way that the new node's private key can
+decrypt it). Re-encrypt the vault with the following command:
+
+  knife vault refresh <%= cookbook_name %> db_credentials --mode client
+<% end %>
