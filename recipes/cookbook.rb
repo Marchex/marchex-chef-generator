@@ -20,26 +20,14 @@ end
 # chefignore
 cookbook_file "#{cookbook_dir}/chefignore"
 
-# Policyfile
-template "#{cookbook_dir}/Policyfile.rb" do
-  source "Policyfile.rb.erb"
-  helpers(ChefDK::Generator::TemplateHelper)
+# Berks
+cookbook_file "#{cookbook_dir}/Berksfile" do
+  action :create_if_missing
 end
-
-###
-# Berks is no longer the default, uncomment this to enable it.
-#
-# # Berks
-# cookbook_file "#{cookbook_dir}/Berksfile" do
-#   action :create_if_missing
-# end
 
 # TK & Serverspec
 template "#{cookbook_dir}/.kitchen.yml" do
-  ## Uncomment this and delete the following `source` line to generate
-  ## non-Policyfile kitchen.yml files (do this if you're using berks):
-  # source 'kitchen.yml.erb'
-  source 'kitchen_policyfile.yml.erb'
+  source 'kitchen.yml.erb'
   helpers(ChefDK::Generator::TemplateHelper)
   action :create_if_missing
 end
@@ -70,7 +58,7 @@ end
 
 cookbook_file "#{cookbook_dir}/spec/spec_helper.rb" do
   # Change this to "spec_helper.rb" to get the berkshelf version
-  source "spec_helper_policyfile.rb"
+  source "spec_helper.rb"
   action :create_if_missing
 end
 
