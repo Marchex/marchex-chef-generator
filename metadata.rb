@@ -1,4 +1,4 @@
-name             'code_generator'
+name             'chefdk-generator'
 maintainer       'Chef Software, Inc.'
 maintainer_email 'dev@chef.io'
 license          'Apache 2 License'
