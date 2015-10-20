@@ -8,13 +8,41 @@ require 'spec_helper'
 
 describe '<%= cookbook_name %>::<%= recipe_name %>' do
   context 'When all attributes are default, on an unspecified platform' do
+    <% if defined?(include_encrypted_data_bag_examples) -%>
+    require 'chef-vault'
+    # Populate expected data bag contents
+    let(:example_encrypted_data_bag_contents) do {
+      "id"        => "my_encrypted_data_bag",
+      "username"  => "my_super_secret_username",
+      "password"  => "my_super_secret_password" }
+    end
+    <% end -%>
     let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new
+      runner = ChefSpec::SoloRunner.new
+      <% if defined?(include_encrypted_data_bag_examples) -%>
+        allow(Chef::DataBag).to receive(:load).with('my_encrypted_data_bag').and_return('my_encrypted_data_bag' => example_encrypted_data_bag_contents)
+        allow(ChefVault::Item).to receive(:load).with('my_encrypted_data_bag', 'username').and_return(example_encrypted_data_bag_contents)
+        allow(ChefVault::Item).to receive(:load).with('my_encrypted_data_bag', 'password').and_return(example_encrypted_data_bag_contents)
+      <% end -%>
       runner.converge(described_recipe)
     end
 
     it 'converges successfully' do
       expect { chef_run }.to_not raise_error
     end
+    <% if defined?(include_encrypted_data_bag_examples) -%>
+    it 'creates the super secret file successfully' do
+      expect(chef_run).to create_template('/tmp/data_bag_secrets.conf').with(
+        user:       'root',
+        group:      'root',
+        mode:       '0400',
+        sensitive:  true
+      )
+      expect(chef_run).to render_file('/tmp/data_bag_secrets.conf').with_content { |content|
+        expect(content).to include("username: #{example_encrypted_data_bag_contents['username']}")
+        expect(content).to include("password: #{example_encrypted_data_bag_contents['password']}")
+      }
+    end
+    <% end -%>
   end
 end

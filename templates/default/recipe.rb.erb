@@ -3,3 +3,20 @@
 # Recipe:: <%= recipe_name %>
 #
 <%= license_description('#') %>
+<% if defined?(include_encrypted_data_bag_examples) -%>
+# Load chef-vault in order to access encrypted data bag
+include_recipe 'chef-vault'
+# Load encrypted data bag
+secret_credentials = chef_vault_item('my_encrypted_data_bag', 'my_encrypted_data_bag')
+
+# Create file with secrets
+template "/tmp/data_bag_secrets.conf" do
+  owner     'root'
+  group     'root'
+  mode      '0400'
+  sensitive true
+  action    :create
+  variables(  username: secret_credentials['username'],
+              password: secret_credentials['password'] )
+end
+<% end -%>
