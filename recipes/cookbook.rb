@@ -40,6 +40,11 @@ directory "#{cookbook_dir}/test/integration/helpers/serverspec" do
   recursive true
 end
 
+cookbook_file "#{cookbook_dir}/.rubocop.yml" do
+  source 'rubocop.yml'
+  action :create_if_missing
+end
+
 cookbook_file "#{cookbook_dir}/test/integration/helpers/serverspec/spec_helper.rb" do
   source 'serverspec_spec_helper.rb'
   action :create_if_missing

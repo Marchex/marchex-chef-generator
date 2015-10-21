@@ -21,7 +21,9 @@ describe '<%= cookbook_name %>::<%= recipe_name %>' do
     <% end -%>
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new
-      <%= "allow(ChefVault::Item).to receive(:load).with(data_bag_name, data_bag_item_id).and_return(data_bag_contents)" if defined?(include_encrypted_data_bag_examples) %>
+      <% if defined?(include_encrypted_data_bag_examples) -%>
+      allow(ChefVault::Item).to receive(:load).with(data_bag_name, data_bag_item_id).and_return(data_bag_contents)
+      <% end -%>
       runner.converge(described_recipe)
     end
 
