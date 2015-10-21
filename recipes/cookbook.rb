@@ -61,9 +61,9 @@ directory "#{cookbook_dir}/spec/unit/recipes" do
   recursive true
 end
 
-cookbook_file "#{cookbook_dir}/spec/spec_helper.rb" do
-  # Change this to "spec_helper.rb" to get the berkshelf version
-  source "spec_helper.rb"
+template "#{cookbook_dir}/spec/spec_helper.rb" do
+  source "spec_helper.rb.erb"
+  helpers(ChefDK::Generator::TemplateHelper)
   action :create_if_missing
 end
 
@@ -97,3 +97,5 @@ if context.have_git
     source "gitignore"
   end
 end
+
+include_recipe 'chefdk-generator::encrypted_data_bag_examples' if defined?(context.include_encrypted_data_bag_examples)

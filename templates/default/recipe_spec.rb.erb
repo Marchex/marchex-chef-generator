@@ -8,22 +8,9 @@ require 'spec_helper'
 
 describe '<%= cookbook_name %>::<%= recipe_name %>' do
   context 'When all attributes are default, on an unspecified platform' do
-    <% if defined?(include_encrypted_data_bag_examples) -%>
-    require 'chef-vault'
-    data_bag_name = '<%= cookbook_name %>'
-    data_bag_item_id = 'database_credentials'
-    # Populate expected data bag contents
-    let(:data_bag_contents) do {
-      "id"        => data_bag_item_id,
-      "username"  => "my_super_secret_username",
-      "password"  => "my_super_secret_password" }
-    end
-    <% end -%>
+    <%= "include ChefVault::TestFixtures.rspec_shared_context" if defined?(include_encrypted_data_bag_examples) %>
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new
-      <% if defined?(include_encrypted_data_bag_examples) -%>
-      allow(ChefVault::Item).to receive(:load).with(data_bag_name, data_bag_item_id).and_return(data_bag_contents)
-      <% end -%>
       runner.converge(described_recipe)
     end
 
@@ -39,8 +26,8 @@ describe '<%= cookbook_name %>::<%= recipe_name %>' do
         sensitive:  true
       )
       expect(chef_run).to render_file('/tmp/data_bag_secrets.conf').with_content { |content|
-        expect(content).to include("username: #{data_bag_contents['username']}")
-        expect(content).to include("password: #{data_bag_contents['password']}")
+        expect(content).to include("username: my_super_secret_username")
+        expect(content).to include("password: my_super_secret_password")
       }
     end
     <% end -%>

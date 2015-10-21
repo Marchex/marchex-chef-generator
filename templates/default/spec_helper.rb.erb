@@ -1,0 +1,6 @@
+require 'chefspec'
+require 'chefspec/berkshelf'
+<% if defined?(include_encrypted_data_bag_examples) %>
+require 'chef-vault'
+require 'chef-vault/test_fixtures'
+<% end %>

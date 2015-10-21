@@ -1,0 +1,2 @@
+source 'https://rubygems.org'
+gem 'chef-vault-testfixtures', '~> 0.4.1'
