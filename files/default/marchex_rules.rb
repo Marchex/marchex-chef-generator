@@ -1,6 +1,6 @@
-#Etsy Foodcritic rules
-@corecommands = ["apt-get", "git", "mkdir", "useradd", "usermod", "touch"]
-@pkgupgrade_whitelist = []
+#Custom Foodcritic rules, some copied from Etsy https://github.com/etsy/foodcritic-rules
+@coreservices = ["dropcamel"]
+@corecommands = ["apt-get", "git", "mkdir", "useradd", "usermod", "touch", "yum"]
 
 rule 'MCHX001', 'TODO: not updated in README.md' do
   tags %w{docs marchex}
@@ -33,6 +33,18 @@ rule "ETSY004", "Execute resource defined without conditional or action :nothing
       condition = Nokogiri::XML(cmd.to_xml).xpath('//ident[@value="only_if" or @value="not_if" or @value="creates"][parent::fcall or parent::command or ancestor::if]')
       (condition.empty? && !cmd_actions.include?("nothing"))
     end.map{|cmd| match(cmd)}
+  end
+end
+
+rule "ETSY005", "Action :restart sent to a core service" do
+  tags %w{style recipe etsy}
+  recipe do |ast, filename|
+    find_resources(ast).select do |resource|
+      notifications(resource).any? do |notification|
+        @coreservices.include?(notification[:resource_name]) and
+          notification[:action] == :restart
+      end
+    end
   end
 end
 
