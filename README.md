@@ -7,9 +7,12 @@ To use, put the following lines at the bottom of your ~/.chef/knife.rb file and 
 # knife.rb
 # <existing contents>
 custom_generator          "<path/to/repo>"
-chefdk.generator_cookbook custom_generator if Dir.exists?(custom_generator)
 
-if defined?(ChefDK::CLI) && ARGV.include?('generate')
-  require "#{chefdk.generator_cookbook}/lib/initialize.rb"
-end
+if Dir.exists?(custom_generator)
+  # Load custom generator
+  chefdk.generator_cookbook custom_generator
+  if defined?(ChefDK::CLI) && ARGV.include?('generate')
+    require "#{chefdk.generator_cookbook}/lib/initialize.rb"
+  end
+end 
 ```
