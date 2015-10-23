@@ -48,6 +48,11 @@ cookbook_file "#{cookbook_dir}/.rubocop.yml" do
   action :create_if_missing
 end
 
+cookbook_file "#{cookbook_dir}/foodcritic_rules.rb" do
+  source 'foodcritic_rules.rb'
+  action :create_if_missing
+end
+
 cookbook_file "#{cookbook_dir}/test/integration/helpers/serverspec/spec_helper.rb" do
   source 'serverspec_spec_helper.rb'
   action :create_if_missing
@@ -101,4 +106,4 @@ if context.have_git
   end
 end
 
-include_recipe 'chefdk-generator::encrypted_data_bag_examples' if defined?(context.include_encrypted_data_bag_examples)
+include_recipe 'marchex-chef-generator::encrypted_data_bag_examples' if defined?(context.include_encrypted_data_bag_examples)

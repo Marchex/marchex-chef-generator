@@ -1,6 +1,6 @@
 AllCops:
   Exclude:
-    - 'marchex_rules.rb'
+    - 'foodcritic_rules.rb'
 
 Metrics/LineLength:
   Max: 120
