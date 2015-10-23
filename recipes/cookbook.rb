@@ -25,6 +25,9 @@ cookbook_file "#{cookbook_dir}/Berksfile" do
   action :create_if_missing
 end
 
+# Rakefile
+cookbook_file "#{cookbook_dir}/Rakefile"
+
 # TK & Serverspec
 template "#{cookbook_dir}/.kitchen.yml" do
   source 'kitchen.yml.erb'
