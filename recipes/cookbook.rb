@@ -35,6 +35,10 @@ template "#{cookbook_dir}/.kitchen.yml" do
   action :create_if_missing
 end
 
+directory "#{cookbook_dir}/test/shared" do
+  recursive true
+end
+
 directory "#{cookbook_dir}/test/integration/default/serverspec" do
   recursive true
 end
@@ -50,6 +54,10 @@ end
 
 cookbook_file "#{cookbook_dir}/foodcritic_rules.rb" do
   source 'foodcritic_rules.rb'
+  action :create_if_missing
+end
+
+cookbook_file "#{cookbook_dir}/test/shared/vagrant_cache_omnibus.rb" do
   action :create_if_missing
 end
 

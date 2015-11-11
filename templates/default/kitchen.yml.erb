@@ -4,19 +4,27 @@ driver:
 
 provisioner:
   name: chef_zero
+  chef_omnibus_install_options: -d /tmp/vagrant-cache/vagrant_omnibus
+
 
 platforms:
-<%% %w(11.18.12 latest).each do |chef_version| %>
+<%% %w(latest).each do |chef_version| %>
   - name: ubuntu-12.04-<%%= chef_version %>
     driver_config:
       box: u12-04-04032015
       box_url: http://tools1.sad.marchex.com:8898/vm_images/u12-04-04032015.box
       require_chef_omnibus: <%%= chef_version %>
+      provision: true
+      vagrantfiles:
+        - test/shared/vagrant_cache_omnibus.rb
   - name: centos-6.6-<%%= chef_version %>
     driver_config:
       box: opscode-centos-6.6
       box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.6_chef-provisionerless.box
       require_chef_omnibus: <%%= chef_version %>
+      provision: true
+      vagrantfiles:
+        - test/shared/vagrant_cache_omnibus.rb
 <%% end %>
 
 suites:
