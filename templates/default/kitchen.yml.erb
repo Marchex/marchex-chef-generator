@@ -11,6 +11,14 @@ platforms:
 <%% %w(latest).each do |chef_version| %>
   - name: ubuntu-12.04-<%%= chef_version %>
     driver_config:
+      box: opscode-ubuntu-12.04
+      box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_provisionerless.box
+      require_chef_omnibus: <%%= chef_version %>
+      provision: true
+      vagrantfiles:
+        - test/shared/vagrant_cache_omnibus.rb
+  - name: ubuntu-12.04-mchx-<%%= chef_version %>
+    driver_config:
       box: u12-04-04032015
       box_url: http://tools1.sad.marchex.com:8898/vm_images/u12-04-04032015.box
       require_chef_omnibus: <%%= chef_version %>
