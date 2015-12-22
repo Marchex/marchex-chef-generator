@@ -47,6 +47,11 @@ directory "#{cookbook_dir}/test/integration/helpers/serverspec" do
   recursive true
 end
 
+cookbook_file "#{cookbook_dir}/test/integration/helpers/serverspec/Gemfile" do
+  source 'Gemfile_pin-serverspec'
+  action :create_if_missing
+end
+
 cookbook_file "#{cookbook_dir}/.rubocop.yml" do
   source 'rubocop.yml'
   action :create_if_missing
