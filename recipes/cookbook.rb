@@ -71,6 +71,11 @@ cookbook_file "#{cookbook_dir}/test/integration/helpers/serverspec/spec_helper.r
   action :create_if_missing
 end
 
+cookbook_file "#{cookbook_dir}/test/integration/helpers/serverspec/Gemfile" do
+  source 'Gemfile_serverspec'
+  action :create_if_missing
+end
+
 template "#{cookbook_dir}/test/integration/default/serverspec/default_spec.rb" do
   source 'serverspec_default_spec.rb.erb'
   helpers(ChefDK::Generator::TemplateHelper)
