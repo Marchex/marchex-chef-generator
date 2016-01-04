@@ -2,10 +2,10 @@ AllCops:
   Exclude:
     - 'foodcritic_rules.rb'
 
-Metrics/LineLength:
-  Max: 120
-
 # Things to ignore
+Metrics/LineLength:
+  Enabled: false
+
 Style/HashSyntax:
   Enabled: false
 
@@ -20,3 +20,13 @@ Style/SpaceInsideParens:
 
 Style/StringLiterals:
   Enabled: false
+
+Performance/Count:
+  Exclude:
+    # Don't care about this for tests
+    - 'spec/unit/recipes/*.rb'
+
+Style/AlignParameters:
+  Exclude:
+    # Don't care about this for tests
+    - 'spec/unit/recipes/*.rb'
