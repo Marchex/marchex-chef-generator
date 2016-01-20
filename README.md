@@ -1,6 +1,8 @@
 # chefdk-generator
 Create skeletons of recipes/cookbooks/etc. that include Marchex-specific improvements.
 
+To use, run `chef generate cookbook <my-cookbook-name>`
+
 To use, put the following lines at the bottom of your ~/.chef/knife.rb file and replace the <path/to/repo> with the location where you checked out this repo:
 
 ```ruby
