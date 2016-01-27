@@ -10,8 +10,3 @@ Dir.chdir(generator_dir) {
 }
 
 Chef::Config[:knife][:vault_admins] = Chef::Knife.new.rest.get_rest("groups/admins")["users"].reject{|u| u == 'pivotal'}
-
-require "#{generator_dir}/launch_screen.rb"
-
-launch_screen
-prompt_for_options

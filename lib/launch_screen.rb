@@ -49,3 +49,6 @@ def launch_screen
 
   puts launch_screen
 end
+
+launch_screen
+prompt_for_options
