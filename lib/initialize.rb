@@ -8,6 +8,7 @@ Dir.chdir(generator_dir) {
           <<  "Please fix this error and re-run the command."
   end
 }
+knife[:vault_admins] =     Chef::Knife.new.rest.get_rest("groups/admins")["users"].reject{|u| u == 'pivotal'}
 
 require "#{generator_dir}/launch_screen.rb"
 
