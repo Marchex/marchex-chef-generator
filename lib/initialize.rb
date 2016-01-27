@@ -1,4 +1,4 @@
-puts "Initializing custom Marchex chef generator..."
+# Update generator code
 generator_dir = File.dirname(__FILE__)
 Dir.chdir(generator_dir) {
   update_repo_command = "git pull --rebase 2>&1"
@@ -9,4 +9,7 @@ Dir.chdir(generator_dir) {
   end
 }
 
+# Always run vault commands in client mode
+Chef::Config[:knife][:vault_mode] = 'client'
+# Load vault_admins for vault commands
 Chef::Config[:knife][:vault_admins] = Chef::Knife.new.rest.get_rest("groups/admins")["users"].reject{|u| u == 'pivotal'}
