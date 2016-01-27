@@ -1,3 +1,6 @@
+require 'chef'
+require 'chef/knife'
+
 # Update generator code
 generator_dir = File.dirname(__FILE__)
 Dir.chdir(generator_dir) {
