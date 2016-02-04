@@ -16,12 +16,14 @@ Dir.chdir(generator_dir) {
 Chef::Config[:knife][:vault_mode] = 'client'
 # Load vault_admins for vault commands
 begin
-    admins = Chef::Knife.new.rest.get_rest("groups/fooadmins")["users"].reject{|u| u == 'pivotal'}
+    admins = Chef::Knife.new.rest.get_rest("groups/admins")["users"].reject{|u| u == 'pivotal'}
     Chef::Config[:knife][:vault_admins] = admins
 rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
          Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
-  if e.to_s.include?('403 "Forbidden"')
-    puts "You're not in the 'admins' group on the chef server. Please send an email to tools-team@marchex.com to get access."
+  if e.to_s.include?('403')
+    puts "####################################################################################################"
+    puts "You're not in the 'admins' group on the chef server. Please send an email to tools-team@marchex.com."
+    puts "####################################################################################################"
   end
   raise e
 end
