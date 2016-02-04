@@ -14,5 +14,15 @@ Dir.chdir(generator_dir) {
 
 # Always run vault commands in client mode
 Chef::Config[:knife][:vault_mode] = 'client'
-# Load vault_admins for vault commands
-Chef::Config[:knife][:vault_admins] = Chef::Knife.new.rest.get_rest("groups/admins")["users"].reject{|u| u == 'pivotal'}
+begin
+  # Load vault_admins for vault commands
+  Chef::Config[:knife][:vault_admins] = Chef::Knife.new.rest.get_rest("groups/admins")["users"].reject{|u| u == 'pivotal'}
+rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
+         Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
+  if e.to_s.include?('403')
+    puts "####################################################################################################"
+    puts "You're not in the 'admins' group on the chef server. Please send an email to tools-team@marchex.com."
+    puts "####################################################################################################"
+  end
+  raise e
+end
