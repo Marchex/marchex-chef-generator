@@ -125,3 +125,4 @@ if context.have_git
 end
 
 include_recipe 'marchex-chef-generator::encrypted_data_bag_examples' if defined?(context.include_encrypted_data_bag_examples)
+include_recipe 'marchex-chef-generator::environment_cookbook_examples' if defined?(context.environment_cookbook)
