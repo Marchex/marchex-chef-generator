@@ -7,7 +7,7 @@ provisioner:
   chef_omnibus_install_options: -d /tmp/vagrant-cache/vagrant_omnibus
 
 platforms:
-<%% %w(11.16.4 12.6.0).each do |chef_version| %>
+<%% %w(12.6.0 latest).each do |chef_version| %>
    - name: ubuntu-12.04-pristine-<%%= chef_version %>
      driver_config:
        box: opscode-ubuntu-12.04

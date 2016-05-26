@@ -1,16 +1,20 @@
 #!/usr/bin/env ruby
 
 require 'json'
-require 'pp'
 
 environment_json = JSON.parse(File.read(ARGV[0]))
-environment_name = environment_json.keys.first
-default_attributes = environment_json[environment_name]["default_attributes"].sort.to_h
-override_attributes = environment_json[environment_name]["override_attributes"].sort.to_h
+environment_name = environment_json['name']
+if environment_json.has_key?('default_attributes')
+  default_attributes = environment_json['default_attributes'].sort.to_h
+end
+if environment_json.has_key?('override_attributes')
+  override_attributes = environment_json['override_attributes'].sort.to_h
+end
 
 @attrs ||= "# Attributes for #{environment_name} environment cookbook\n"
 
 def build_attributes(hash, precedence='force_default', context=nil)
+  return if hash.nil?
   current_context ||= ''
   current_context << "[\"#{context}\"]"
   hash.each do |key, val|
