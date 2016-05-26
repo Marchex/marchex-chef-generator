@@ -35,6 +35,12 @@ template "#{cookbook_dir}/.kitchen.yml" do
   action :create_if_missing
 end
 
+template "#{cookbook_dir}/.kitchen.ec2.yml" do
+  source 'kitchen.ec2.yml.erb'
+  helpers(ChefDK::Generator::TemplateHelper)
+  action :create_if_missing
+end
+
 directory "#{cookbook_dir}/test/shared" do
   recursive true
 end
