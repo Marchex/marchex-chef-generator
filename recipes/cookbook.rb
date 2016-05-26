@@ -57,8 +57,9 @@ cookbook_file "#{cookbook_dir}/.rubocop.yml" do
   action :create_if_missing
 end
 
-cookbook_file "#{cookbook_dir}/foodcritic_rules.rb" do
-  source 'foodcritic_rules.rb'
+template "#{cookbook_dir}/foodcritic_rules.rb" do
+  source 'foodcritic_rules.erb'
+  helpers(ChefDK::Generator::TemplateHelper)
   action :create_if_missing
 end
 
