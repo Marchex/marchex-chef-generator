@@ -15,12 +15,11 @@ Vagrant.configure(2) do |config|
     # see https://github.com/tknerr/bills-kitchen/pull/78
     if Dir.pwd.include? ".kitchen/kitchen-vagrant/"
 
-      config.cache.enable :generic, {
-        # for test-kitchen =< 1.3
-        "busser-gemcache" => { cache_dir: "/tmp/busser/gems/cache" },
-        # for test-kitchen >= 1.4
-        "verifier-gemcache" => { cache_dir: "/tmp/verifier/gems/cache" }
-      }
+      config.cache.enable :generic,
+                          # for test-kitchen =< 1.3
+                          "busser-gemcache"   => { cache_dir: "/tmp/busser/gems/cache" },
+                          # for test-kitchen >= 1.4
+                          "verifier-gemcache" => { cache_dir: "/tmp/verifier/gems/cache" }
 
       # fix permissions
       # see https://github.com/mitchellh/vagrant/issues/2257
@@ -31,5 +30,4 @@ Vagrant.configure(2) do |config|
       EOF
     end
   end
-
 end
