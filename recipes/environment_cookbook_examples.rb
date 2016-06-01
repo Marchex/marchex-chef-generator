@@ -95,8 +95,6 @@ migrate_attributes(environment_attributes)
 # Walk attributes data structure and populate it
 build_attributes(environment_attributes)
 
-puts @@attrs
-
 directory "#{cookbook_dir}/attributes" do
   recursive true
 end
