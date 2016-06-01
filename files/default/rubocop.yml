@@ -12,7 +12,7 @@ Style/HashSyntax:
 Style/IndentationWidth:
   Enabled: false
 
-Style/SingleSpaceBeforeFirstArg:
+Style/SpaceBeforeFirstArg:
   Enabled: false
 
 Style/SpaceInsideParens:

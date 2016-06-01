@@ -1,14 +1,13 @@
 require 'chef'
 require 'chef/knife'
 
-# Update generator code
-generator_dir = File.dirname(__FILE__)
+# Find the latest sha of the generator code and complain if the local copy is out of date
+generator_dir = "#{File.dirname(__FILE__)}/.."
 Dir.chdir(generator_dir) {
-  update_repo_command = "git pull --rebase 2>&1"
-  update_repo_command_output = `#{update_repo_command}`
-  unless ($?.success?)
-    raise     "'#{update_repo_command}' failed with exit code #{$?.exitstatus} and output:\n\n#{update_repo_command_output}\n" \
-          <<  "Please fix this error and re-run the command."
+  current_sha = `git rev-parse @`
+  remote_sha  = `git rev-parse @{u}`
+  unless (current_sha == remote_sha)
+    Chef::Log.warn("### WARNING ### You do not have the latest code checked out, please run 'cd #{generator_dir}' and do a 'git pull'")
   end
 }
 

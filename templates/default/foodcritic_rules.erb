@@ -23,6 +23,29 @@ rule 'MCHX001', 'TODO: not updated in README.md' do
   end
 end
 
+<% if defined?(environment_cookbook) -%>
+rule 'MCHX002', 'precedence level other than force_default used in environment cookbook attributes file' do
+  tags %w{style marchex}
+  cookbook do |path|
+    attributes_file = File.join(path, 'attributes', 'default.rb')
+    unless File.exists?(attributes_file)
+      [ file_match(attributes_file) ]
+    end
+    lines = File.readlines(attributes_file)
+    lines.collect.with_index do |line, index|
+      if line.match('node.') && ! line.match('node.force_default')
+        {
+          :filename => attributes_file,
+          :matched => attributes_file,
+          :line => index + 1,
+          :column => 0
+        }
+      end
+    end.compact
+  end
+end
+<% end -%>
+
 # This rule does not detect execute resources defined inside a conditional, as foodcritic rule FC023 (Prefer conditional attributes)
 # already provides this. It's recommended to use both rules in conjunction. (foodcritic -t etsy,FC023)
 rule "ETSY004", "Execute resource defined without conditional or action :nothing" do

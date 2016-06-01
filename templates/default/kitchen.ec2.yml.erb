@@ -1,0 +1,32 @@
+---
+driver:
+  name: ec2
+  aws_ssh_key_id: tools-team
+  region: us-west-2
+  subnet_id: subnet-2a251342
+  instance_type: t2.micro
+  tags:
+    Name: <%= ENV['KITCHEN_INSTANCE_NAME'] || 'delivery-sugar-kitchen' %>
+
+provisioner:
+  name: chef_zero
+
+transport:
+  ssh_key: <%= ENV['KITCHEN_EC2_SSH_KEY_PATH'] %>
+  username: ubuntu
+
+platforms:
+<% %w(12.6.0 latest).each do |chef_version| %>
+  - name: ubuntu-12.04-<%= chef_version %>
+    driver:
+      image_id: ami-5ff8e96f
+    driver_config:
+      provision: true
+      require_chef_omnibus: <%= chef_version %>
+<% end %>
+
+suites:
+  - name: default
+    run_list:
+      - recipe[<%= cookbook_name %>::default]
+    attributes:

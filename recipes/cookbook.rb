@@ -35,6 +35,12 @@ template "#{cookbook_dir}/.kitchen.yml" do
   action :create_if_missing
 end
 
+template "#{cookbook_dir}/.kitchen.ec2.yml" do
+  source 'kitchen.ec2.yml.erb'
+  helpers(ChefDK::Generator::TemplateHelper)
+  action :create_if_missing
+end
+
 directory "#{cookbook_dir}/test/shared" do
   recursive true
 end
@@ -57,8 +63,9 @@ cookbook_file "#{cookbook_dir}/.rubocop.yml" do
   action :create_if_missing
 end
 
-cookbook_file "#{cookbook_dir}/foodcritic_rules.rb" do
-  source 'foodcritic_rules.rb'
+template "#{cookbook_dir}/foodcritic_rules.rb" do
+  source 'foodcritic_rules.erb'
+  helpers(ChefDK::Generator::TemplateHelper)
   action :create_if_missing
 end
 
@@ -125,3 +132,4 @@ if context.have_git
 end
 
 include_recipe 'marchex-chef-generator::encrypted_data_bag_examples' if defined?(context.include_encrypted_data_bag_examples)
+include_recipe 'marchex-chef-generator::environment_cookbook_examples' if defined?(context.environment_cookbook)
