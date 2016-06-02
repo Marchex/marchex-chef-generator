@@ -4,7 +4,6 @@
 #
 <%= license_description('#') %>
 <% if defined?(environment_cookbook) -%>
-
 ### DO NOT PUT CODE HERE                            ###
 #                                                     #
 # environment cookbooks exist ONLY to set attributes  #
@@ -12,7 +11,6 @@
 #                                                     #
 ### DO NOT PUT CODE HERE                            ###
 <% end -%>
-
 <% if defined?(include_encrypted_data_bag_examples) -%>
 # Load chef-vault in order to access encrypted data bag
 include_recipe 'chef-vault'
