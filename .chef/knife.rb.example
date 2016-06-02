@@ -1,0 +1,22 @@
+# See https://docs.getchef.com/config_rb_knife.html for more information on knife configuration options
+current_dir         = File.dirname(__FILE__)
+log_level           :info
+log_location        STDOUT
+node_name           "#{ENV['USER']}"
+client_key          "---client_key---"
+chef_server_url     "https://chef.marchex.com/organizations/marchex"
+cookbook_path       "#{current_dir}/../cookbooks"
+knife[:editor] =    "/usr/bin/vim"
+custom_generator    "#{current_dir}/../../marchex-chef-generator"
+cookbook_copyright  "Marchex, inc."
+cookbook_email      "techops@marchex.com"
+cookbook_license    "apachev2"
+
+# Load custom generator
+chefdk.generator_cookbook custom_generator
+require "#{current_dir}/../lib/initialize.rb"
+
+# Get user input if the user is generating something
+if defined?(ChefDK::CLI) && ARGV.include?('generate') && !ARGV.include?('skip_prompt')
+  require "#{current_dir}/../lib/launch_screen.rb"
+end

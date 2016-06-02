@@ -1,0 +1,2 @@
+.chef/*
+!.chef/knife.rb.example
