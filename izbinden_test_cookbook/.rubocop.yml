@@ -1,0 +1,32 @@
+AllCops:
+  Exclude:
+    - 'foodcritic_rules.rb'
+
+# Things to ignore
+Metrics/LineLength:
+  Enabled: false
+
+Style/HashSyntax:
+  Enabled: false
+
+Style/IndentationWidth:
+  Enabled: false
+
+Style/SpaceBeforeFirstArg:
+  Enabled: false
+
+Style/SpaceInsideParens:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: false
+
+Performance/Count:
+  Exclude:
+    # Don't care about this for tests
+    - 'spec/unit/recipes/*.rb'
+
+Style/AlignParameters:
+  Exclude:
+    # Don't care about this for tests
+    - 'spec/unit/recipes/*.rb'
