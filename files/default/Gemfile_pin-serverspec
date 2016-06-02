@@ -1,5 +1,0 @@
-source 'https://rubygems.org'
-
-# Required to have serverspec work on Chef 11.x, see: https://coderanger.net/serverspec-chef-11/
-gem 'specinfra', '2.44.7'
-gem 'serverspec', '2.24.3'

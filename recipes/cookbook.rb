@@ -54,8 +54,12 @@ directory "#{cookbook_dir}/test/integration/helpers/serverspec" do
 end
 
 cookbook_file "#{cookbook_dir}/test/integration/helpers/serverspec/Gemfile" do
-  source 'Gemfile_pin-serverspec'
+  source 'Gemfile_serverspec'
   action :create_if_missing
+end
+
+remote_directory "#{cookbook_dir}/.delivery" do
+  source "delivery-config"
 end
 
 cookbook_file "#{cookbook_dir}/.rubocop.yml" do
@@ -75,11 +79,6 @@ end
 
 cookbook_file "#{cookbook_dir}/test/integration/helpers/serverspec/spec_helper.rb" do
   source 'serverspec_spec_helper.rb'
-  action :create_if_missing
-end
-
-cookbook_file "#{cookbook_dir}/test/integration/helpers/serverspec/Gemfile" do
-  source 'Gemfile_serverspec'
   action :create_if_missing
 end
 

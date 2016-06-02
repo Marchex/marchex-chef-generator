@@ -50,7 +50,6 @@ def launch_screen
   puts launch_screen
 end
 
-unless defined?(ChefDK::Generator.context.skip_prompt) then
-  launch_screen
-  prompt_for_options
-end
+
+launch_screen
+prompt_for_options unless defined?(ChefDK::Generator.context.skip_prompt)
