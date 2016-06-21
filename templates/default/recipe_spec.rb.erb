@@ -8,7 +8,7 @@ require 'spec_helper'
 
 describe '<%= cookbook_name %>::<%= recipe_name %>' do
   context 'When all attributes are default, on Ubuntu 12.04' do
-<%= "    include ChefVault::TestFixtures.rspec_shared_context" if ( defined?(include_chef_vault_examples) && include_chef_vault_examples == 'true' ) %>
+    <%= "include ChefVault::TestFixtures.rspec_shared_context" if ( defined?(include_chef_vault_examples) && include_chef_vault_examples == 'true' ) %>
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04')
       runner.converge(described_recipe)
