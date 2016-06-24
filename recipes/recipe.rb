@@ -5,7 +5,6 @@ recipe_path = File.join(cookbook_dir, "recipes", "#{context.new_file_basename}.r
 spec_helper_path = File.join(cookbook_dir, "spec", "spec_helper.rb")
 spec_path = File.join(cookbook_dir, "spec", "unit", "recipes", "#{context.new_file_basename}_spec.rb")
 
-
 # Chefspec
 directory "#{cookbook_dir}/spec/unit/recipes" do
   recursive true

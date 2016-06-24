@@ -1,0 +1,20 @@
+# Attributes for '<%= cookbook_name %>' role cookbook
+# TODO set attributes appropriate for this role
+# Set attributes ONLY at 'normal' precedence level
+#
+# Example: install packages that nodes using this role require
+# node.normal['package_set']['install']  ||= []
+# node.normal['package_set']['install']  << <%= cookbook_name %>
+# set_array_attribute( 'normal', "['package_set']['pkgs'][''<%= cookbook_name %>']", [
+#  { :name => "libjpeg8",
+#    :version => "8c-2ubuntu7" },
+#  { :name => "libcairo2",
+#    :version => "1.10.2-6.1ubuntu3" },
+#  { :name => "libspeex1",
+#    :version => "1.2~rc1-3ubuntu2" },
+#  { :name => "libspeexdsp1",
+#    :version => "1.2~rc1-3ubuntu2" },
+#  { :name => "arping",
+#    :version => "2.09-2" }
+#])
+# Use set_array_attribute with 'normal' for any setting any  array attributes

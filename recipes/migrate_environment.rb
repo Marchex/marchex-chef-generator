@@ -1,7 +1,7 @@
 context = ChefDK::Generator.context
 cookbook_dir = File.join(context.cookbook_root, context.cookbook_name)
 
-# Load environment attributes
+# Load environment attributes from 'source' environment (if specified)
 environment_json = JSON.parse(File.read(context.environment_attributes_file))
 if environment_json.has_key?('default_attributes')
   environment_attributes = environment_json['default_attributes']
@@ -16,15 +16,15 @@ end
 def build_attributes(hash, hash_context=nil)
     current_hash_context ||= ''
     if(hash_context) then
-      current_hash_context << "[\"#{hash_context}\"]"
+      current_hash_context << "['#{hash_context}']"
     end
     hash.each do |key, val|
         if val.is_a?(Hash)
             build_attributes(val, key)
         elsif val.is_a?(Array)
-            @@attrs << "node.force_default#{current_hash_context}[\"#{key}\"] = %w( #{val.join(' ')} )\n"
+            @@attrs << "set_array_attribute('force_default', \"#{current_hash_context}['#{key}']\", %w( #{val.join(' ')} ) )\n"
         else
-            @@attrs << "node.force_default#{current_hash_context}[\"#{key}\"] = '#{val}'\n"
+            @@attrs << "node.force_default#{current_hash_context}['#{key}'] = '#{val}'\n"
         end
     end
 end
@@ -94,10 +94,6 @@ migrate_attributes(environment_attributes)
 
 # Walk attributes data structure and populate it
 build_attributes(environment_attributes)
-
-directory "#{cookbook_dir}/attributes" do
-  recursive true
-end
 
 file "#{cookbook_dir}/attributes/default.rb" do
   content @@attrs

@@ -1,0 +1,14 @@
+# Attributes for '<%= cookbook_name %>' environment cookbook
+# TODO replace all attribute values with ones appriorate for this environment
+node.force_default["nullmailer"]["defaultdomain"] = 'sea1.marchex.com'
+set_array_attribute( 'force_default', "['nullmailer']['remotes']", %w( mail-admin.sea1.marchex.com smtp ) )
+set_array_attribute( 'force_default', "['ntp']['servers']", %w( ntp1.sea1.marchex.com ntp2.sea1.marchex.com ) )
+
+node.force_default["postfix"]["relayhost"] = '[mail.sea1.marchex.com]'
+
+set_array_attribute( 'force_default', "['resolver']['nameservers']", %w( 10.207.10.11 10.207.10.12 ) )
+set_array_attribute( 'force_default', "['resolver']['search']", %w( devint.marchex.com qa.marchex.com sea1.marchex.com marchex.com ) )
+
+set_array_attribute( 'force_default', "['mchx-auth']['ldap_servers']", %w( ldap1.sea1.marchex.com ldap2.sea1.marchex.com ) )
+
+node.force_default["openldap"]["slapd_master"] = 'ldap1.sea1.marchex.com'

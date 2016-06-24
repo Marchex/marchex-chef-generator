@@ -23,9 +23,9 @@ rule 'MCHX001', 'TODO: not updated in README.md' do
   end
 end
 
-<% if defined?(environment_cookbook) -%>
-rule 'MCHX002', 'precedence level other than force_default used in environment cookbook attributes file' do
-  tags %w{style marchex}
+<% if ( defined?(cookbook_type) && (cookbook_type.match(/^(environment|role)_cookbook$/)) ) -%>
+rule 'MCHX002', 'array value set without set_array_attribute method in environment/role cookbook attributes file' do
+  tags %w{style marchex correctness}
   cookbook do |path|
     attributes_file = File.join(path, 'attributes', 'default.rb')
     unless File.exists?(attributes_file)
@@ -33,7 +33,15 @@ rule 'MCHX002', 'precedence level other than force_default used in environment c
     end
     lines = File.readlines(attributes_file)
     lines.collect.with_index do |line, index|
-      if line.match('node.') && ! line.match('node.force_default')
+      # Find cases of arrays being set without set_array_attribute
+      if (line.match('node\.') &&
+          !line.match('package_set') && # ignore package_set attributes; they're designed to be appended
+          ( line.match('=\s+%w') ||
+            line.match('Array') ||
+            line.match('=\s+\[') ||
+            line.match('to_a')
+          )
+         )
         {
           :filename => attributes_file,
           :matched => attributes_file,
@@ -44,6 +52,52 @@ rule 'MCHX002', 'precedence level other than force_default used in environment c
     end.compact
   end
 end
+
+<% if cookbook_type == 'environment_cookbook' -%>
+
+rule 'MCHX003', 'precedence level other than force_default used in environment cookbook attributes file' do
+  tags %w{style marchex correctness}
+  cookbook do |path|
+    attributes_file = File.join(path, 'attributes', 'default.rb')
+    unless File.exists?(attributes_file)
+      [ file_match(attributes_file) ]
+    end
+    lines = File.readlines(attributes_file)
+    lines.collect.with_index do |line, index|
+      if (line.match('node\.') || line.match('set_array_attribute')) && ! line.match('force_default')
+        {
+          :filename => attributes_file,
+          :matched => attributes_file,
+          :line => index + 1,
+          :column => 0
+        }
+      end
+    end.compact
+  end
+end
+
+<% elsif cookbook_type == 'role_cookbook' -%>
+rule 'MCHX004', 'precedence level other than normal used in role cookbook attributes file' do
+  tags %w{style marchex correctness}
+  cookbook do |path|
+    attributes_file = File.join(path, 'attributes', 'default.rb')
+    unless File.exists?(attributes_file)
+      [ file_match(attributes_file) ]
+    end
+    lines = File.readlines(attributes_file)
+    lines.collect.with_index do |line, index|
+      if (line.match('node\.') || line.match('set_array_attribute')) && ! line.match('normal')
+        {
+          :filename => attributes_file,
+          :matched => attributes_file,
+          :line => index + 1,
+          :column => 0
+        }
+      end
+    end.compact
+  end
+end
+<% end -%>
 <% end -%>
 
 # This rule does not detect execute resources defined inside a conditional, as foodcritic rule FC023 (Prefer conditional attributes)

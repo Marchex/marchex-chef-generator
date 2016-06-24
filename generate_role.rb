@@ -4,32 +4,32 @@ require 'json'
 require 'pp'
 
 role_json = JSON.parse(File.read(ARGV[0]))
-role_name = role_json.keys.first
-default_attributes = role_json[role_name]["default_attributes"].sort.to_h
-override_attributes = role_json[role_name]["override_attributes"].sort.to_h
-role_run_list = role_json[role_name]["run_list"]
+role_name = role_json['name']
+role_attributes ||= {}
+if role_json.has_key?('default_attributes')
+  role_attributes = role_json['default_attributes']
+end
+if role_json.has_key?('override_attributes')
+  # Override default attributes with override attributes
+  role_attributes.merge!(role_json['override_attributes'])
+end
 
-# pp role_run_list
-# puts role_json
-
-# pp default_attributes
-# pp override_attributes
+role_run_list = role_json['run_list']
 
 @attrs ||= "# Attributes for #{role_name} role cookbook\n"
 
-def build_attributes(hash, precedence='force_default', context=nil)
+def build_attributes(hash, context=nil)
   current_context ||= ''
-  current_context << "[\"#{context}\"]"
+  current_context << "['#{context}']"
   hash.each do |key, val|
       if val.is_a?(Hash)
-          build_attributes(val, precedence, key)
+          build_attributes(val, key)
       elsif val.is_a?(Array)
-        # ignore comments
-        @attrs << "#{precedence}#{current_context}[\"#{key}\"] = %w(\n\t\t"
-        @attrs << "#{val.join(",\n\t\t")}"
-        @attrs << "\n\t)\n"
+        @attrs << "set_array_attribute( 'normal', \"#{current_context}['#{key}']\" = [ \n\t\t"
+        @attrs << "#{val.map{|v| "\"#{v}\"" }.join(",\n\t\t")}"
+        @attrs << "\n\t]\n"
       else
-          @attrs << "#{precedence}#{current_context}[\"#{key}\"] = '#{val}'\n"
+          @attrs << "node.normal#{current_context}[\"#{key}\"] = '#{val}'\n"
       end
   end
 end
@@ -69,13 +69,13 @@ end
 
 
 # Walk attributes data structure and populate it
-# build_attributes(default_attributes)
+build_attributes(role_attributes)
 # build_attributes(default_attributes, 'force_default')
 # build_attributes(default_attributes, 'default')
 # build_attributes(override_attributes, 'force_override')
 build_run_list(role_run_list)
 
-# puts @attrs
+puts @attrs
 puts @run_list
 # puts default_attrs
 # puts override_attrs
