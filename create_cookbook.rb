@@ -1,10 +1,15 @@
 #!/usr/bin/env ruby
 require 'tty-prompt'
 require 'mixlib/shellout'
-require 'pp'
 
+# Check that we have what we need to create/modify git repo
 def check_repo_prerequisites
-  required_commands = %w( hub github_protect_branch )
+  unless ENV['MARCHEX_GITHUB_TOKEN']
+    puts "MARCHEX_GITHUB_TOKEN environment variable not set - can't proceed with repository creation."
+    return false
+  end
+
+  required_commands = %w( hub github_protect_branch curl )
   required_commands.each { |c|
     command_check = Mixlib::ShellOut.new("which #{c}").run_command
     if(command_check.exitstatus != 0)
@@ -15,6 +20,8 @@ def check_repo_prerequisites
   return true
 end
 
+# Run command and display stdout/stderr if exit code is not zero
+# pass in cwd if you want the command to be executed somewhere other than the current directory
 def shell_command(command, cwd=nil)
   puts "Running command: #{command}"
   cmd = Mixlib::ShellOut.new(command, :cwd => cwd)
@@ -22,6 +29,7 @@ def shell_command(command, cwd=nil)
   cmd.error! # Display stdout if exit code was non-zero
 end
 
+# Cookbook type metadata
 cookbook_types = {
   custom: {
       description:      "a custom, marchex-specific cookbook",
@@ -47,6 +55,7 @@ answers = Hash.new { |h, k| h[k] = { } }
 # Create prompt for collecting input
 prompt = TTY::Prompt.new
 
+# Find out which type of cookbook they want
 puts "Please choose from the following types of cookbooks:\n\n"
 cookbook_types.each{ |name,metadata| puts "#{name} - #{metadata[:description]}" }
 puts "\n"
@@ -54,7 +63,7 @@ puts "\n"
 # Find cookbook type
 cookbook_type = prompt.select("Cookbook type: ", cookbook_types.keys, convert: :string)
 
-# ask if they want chef-vault examples
+# Ask if they want chef-vault examples
 if (cookbook_type == :custom)
   answers[:include_chef_vault_examples] = prompt.ask('Include chef-vault examples (for rendering sensitive data e.g. passwords/private keys)?', default: false, convert: :bool)
 end
@@ -65,11 +74,9 @@ prompt.say(cookbook_types[cookbook_type][:name_hint], color: :bright_yellow)
 # Get cookbook name and validate that it meets guidelines
 cookbook_name = prompt.ask('cookbook name: ') do |q|
   q.required true
+  q.modify :down, :trim # lowercase input and trim trailing/leading whitespace
   q.validate(cookbook_types[cookbook_type][:name_regex], cookbook_types[cookbook_type][:name_error])
-  q.modify :down, :trim
 end
-
-pp answers
 
 # Construct command line arguments; first arg is cookbook name, and then key value pairs of attribute=value
 generator_options = "#{cookbook_name} -- "
@@ -81,21 +88,27 @@ shell_command(generator_command)
 
 prompt.say("Cookbook generated successfully in ./#{cookbook_name} directory.", color: :bright_green)
 
+# Ask if they want to create a repo, if they have the required commands/env
 unless check_repo_prerequisites
-  prompt.say("Can't proceed with repo creation and initialization due to missing commands.", color: :bright_red)
+  prompt.say("Can't proceed with repo creation and initialization due to missing prerequisites.", color: :bright_red)
 else
-  if (prompt.yes?("Initialize repo on https://github.marchex.com/marchex-chef/#{cookbook_name}?"))
+  repo_url = "https://github.marchex.com/marchex-chef/#{cookbook_name}"
+  # See if repo already exists
+  prompt.say("Checking to see whether #{repo_url} already exists...", color: :bright_yellow)
+  repo_check_http_code =  Mixlib::ShellOut.new("curl -IsS -o /dev/null --connect-timeout 3 -w '%\{http_code\}' #{repo_url}").run_command.stdout
+  if (repo_check_http_code != "404")
+    prompt.say("repository already exists at #{repo_url} -- not creating/modifying it.", color: :bright_yellow)
+  elsif(prompt.yes?("Initialize repo at #{repo_url}?"))
     shell_command("git init #{cookbook_name}")
     shell_command("hub create marchex-chef/#{cookbook_name}", cookbook_name)
     shell_command("git add .", cookbook_name)
     shell_command("git commit -m 'Initial commit.'", cookbook_name)
     shell_command("git push origin master", cookbook_name)
+    # Running github_protect_branch immediately after the initial push fails sometimes, so sleep for 3 seconds
     sleep(3)
-    # shell_command("cd #{cookbook_name} && git remote add origin https://")
+    # Set up master branch protection rules
     shell_command("github_protect_branch -o marchex-chef -r #{cookbook_name} -s 'chef_delivery/verify/lint' -s 'chef_delivery/verify/syntax' -s 'chef_delivery/verify/unit' -u chef-delivery")
   end
 end
 
-prompt.say("Repo initialized! Now, 'cd #{cookbook_name}' and run 'rake unit' to run tests.", color: :bright_green)
-
-# prompt.say("Now, 'cd #{cookbook_name}' and run 'rake unit' to run tests.", color: :bright_green)
+prompt.say("Cookbook initialized! Now, 'cd #{cookbook_name}' and run 'rake unit' to run tests.", color: :bright_green)
