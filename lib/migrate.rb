@@ -1,4 +1,5 @@
 require 'json'
+require 'chef-api'
 
 def load_attributes(json_file)
   # Load JSON
@@ -72,4 +73,44 @@ def parse_run_list_item(item)
   end
 
   return metadata
+end
+
+def get_config
+  return JSON.parse(IO.read('config.json'))
+end
+
+def hosted_chef_server
+  config = get_config()
+  ChefAPI::Connection.new(
+    endpoint: config['old_chef_server']['endpoint'],
+    client:   config['old_chef_server']['client'],
+    key:      config['old_chef_server']['key']
+  )
+end
+
+def json_tempfile(prefix, json_content)
+  # Write out its content to a tempfile
+  require 'tempfile'
+  json_file = Tempfile.new(prefix)
+  json_file.write(json_content)
+  json_file.close
+
+  # Return path to tempfile
+  return json_file.path
+end
+
+def load_source_environment(env_name)
+  # Load environment from old chef server
+  include ChefAPI::Resource
+  hosted_environment = hosted_chef_server.environments.fetch(env_name)
+
+  return json_tempfile(env_name, hosted_environment.to_json)
+end
+
+def load_source_role(role_name)
+  # Load role from old chef server
+  include ChefAPI::Resource
+  hosted_role = hosted_chef_server.roles.fetch(role_name)
+
+  return json_tempfile(role_name, hosted_role.to_json)
 end
