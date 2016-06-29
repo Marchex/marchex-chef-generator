@@ -11,7 +11,7 @@
 #                                                     #
 ### DO NOT PUT CODE HERE                            ###
 <% end -%>
-<% if ( defined?(context.include_chef-vault_examples) && (context.include_chef-vault_examples == true) ) -%>
+<% if ( defined?(include_chef_vault_examples) && include_chef_vault_examples == 'true' ) -%>
 
 # Load chef-vault in order to access vault
 include_recipe 'chef-vault'

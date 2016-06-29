@@ -68,7 +68,7 @@ cookbook_type = prompt.select("Cookbook type: ", cookbook_types.keys, convert: :
 
 # Ask if they want chef-vault examples
 if (cookbook_type == :custom)
-  answers[:include_chef_vault_examples] = prompt.ask('Include chef-vault examples? (Usefil for handling sensitive data e.g. passwords/private keys)', default: 'No', convert: :bool)
+  answers[:include_chef_vault_examples] = prompt.ask('Include chef-vault examples? (Useful for handling sensitive data e.g. passwords/private keys)', default: 'No', convert: :bool)
 end
 
 # Give the user a hint as to cookbook naming
@@ -82,7 +82,7 @@ cookbook_name = prompt.ask('cookbook name: ') do |q|
 end
 
 # Construct command line arguments; first arg is cookbook name, and then key value pairs of attribute=value
-generator_options = "#{cookbook_name} -- "
+generator_options = "#{cookbook_name} "
 generator_options << answers.map{ |k,v| "-a #{k}=#{v}" }.join(" ")
 
 generator_command = "chef generate cookbook -g . #{generator_options}"

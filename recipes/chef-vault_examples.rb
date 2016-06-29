@@ -1,7 +1,6 @@
-
 context = ChefDK::Generator.context
 cookbook_dir = File.join(context.cookbook_root, context.cookbook_name)
-data_bag_template_path = File.join(cookbook_dir, "templates", "default", "data_bag_secrets.conf.erb")
+data_bag_template_path = File.join(cookbook_dir, "templates", "default", "chef-vault_secrets.conf.erb")
 data_bag_example_dir = File.join(cookbook_dir, "test", "integration", "data_bags", context.cookbook_name)
 gemfile_path = File.join(cookbook_dir, "Gemfile")
 

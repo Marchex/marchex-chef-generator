@@ -8,7 +8,7 @@ describe '<%= cookbook_name %>::default' do
     skip 'Replace this with meaningful tests'
   end
 
-  <% if ( defined?(context.include_chef-vault_examples) && (context.include_chef-vault_examples == true) ) -%>
+  <% if ( defined?(include_chef_vault_examples) && (include_chef_vault_examples == 'true') ) -%>
   describe file('/tmp/chef-vault_secrets.conf') do
     it { should be_file }
     it { should be_owned_by 'root' }
