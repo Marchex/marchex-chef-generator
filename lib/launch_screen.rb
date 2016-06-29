@@ -1,11 +1,3 @@
-def prompt_for_options
-  require 'highline/import'
-  if HighLine.agree('Include encrypted data bag example docs/tests?')
-    ChefDK::Generator.add_attr_to_context(:include_encrypted_data_bag_examples, true)
-  end
-end
-
-
 def launch_screen
   quotes =  [
     'The least likely can be the most dangerous',
@@ -49,7 +41,3 @@ def launch_screen
 
   puts launch_screen
 end
-
-
-launch_screen
-prompt_for_options unless defined?(ChefDK::Generator.context.skip_prompt)

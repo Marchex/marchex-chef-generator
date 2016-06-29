@@ -1,9 +1,9 @@
 require 'chefspec'
 require 'chefspec/berkshelf'
-<% if defined?(include_encrypted_data_bag_examples) %>
+<% if ( defined?(include_chef_vault_examples) && (include_chef_vault_examples == 'true') ) -%>
 require 'chef-vault'
 require 'chef-vault/test_fixtures'
-<% end %>
+<% end -%>
 
 # Enable 'chain clauses', which makes success/failure messages more explicit.
 # For example, given the following test:

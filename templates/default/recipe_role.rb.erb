@@ -1,0 +1,15 @@
+#
+# Cookbook Name:: <%= cookbook_name %>
+# Recipe:: <%= recipe_name %>
+#
+<%= license_description('#') %>
+### Put ONLY include_recipe lines in this file      ###
+#                                                     #
+# Role cookbooks exist ONLY to set attributes         #
+# in attributes/default.rb and use include_recipe     #
+# directives to pull in other recipes.                #
+#                                                     #
+### Put ONLY include_recipe lines in this file      ###
+<% if defined?(role_cookbook_dependencies) -%>
+<%= role_cookbook_dependencies.map{ |d| "include_recipe '#{d[:cookbook_name]}::#{d[:recipe_name]}'" }.join("\n") %>
+<% end -%>

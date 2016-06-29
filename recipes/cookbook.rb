@@ -130,5 +130,6 @@ if context.have_git
   end
 end
 
-include_recipe 'marchex-chef-generator::encrypted_data_bag_examples' if defined?(context.include_encrypted_data_bag_examples)
-include_recipe 'marchex-chef-generator::environment_cookbook_examples' if defined?(context.environment_cookbook)
+include_recipe 'marchex-chef-generator::chef-vault_examples' if ( defined?(context.include_chef_vault_examples) && (context.include_chef_vault_examples == 'true') )
+include_recipe 'marchex-chef-generator::environment_cookbook' if ( defined?(context.cookbook_type) && (context.cookbook_type == 'environment_cookbook') )
+include_recipe 'marchex-chef-generator::role_cookbook' if ( defined?(context.cookbook_type) && (context.cookbook_type == 'role_cookbook') )

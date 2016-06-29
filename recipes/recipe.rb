@@ -5,7 +5,6 @@ recipe_path = File.join(cookbook_dir, "recipes", "#{context.new_file_basename}.r
 spec_helper_path = File.join(cookbook_dir, "spec", "spec_helper.rb")
 spec_path = File.join(cookbook_dir, "spec", "unit", "recipes", "#{context.new_file_basename}_spec.rb")
 
-
 # Chefspec
 directory "#{cookbook_dir}/spec/unit/recipes" do
   recursive true
@@ -28,4 +27,4 @@ template recipe_path do
   helpers(ChefDK::Generator::TemplateHelper)
 end
 
-include_recipe 'marchex-chef-generator::encrypted_data_bag_examples' if defined?(context.include_encrypted_data_bag_examples)
+include_recipe 'marchex-chef-generator::chef-vault_examples' if ( defined?(context.include_chef_vault_examples) && (context.include_chef_vault_examples == 'true') )
