@@ -2,7 +2,7 @@
 
 TODO: Enter the cookbook description here.
 
-<% if defined?(include_encrypted_data_bag_examples) %>
+<% if ( defined?(context.include_chef-vault_examples) && (context.include_chef-vault_examples == true) ) -%>
 
 We use [chef-vault](https://github.com/Nordstrom/chef-vault) to manage our secrets within cookbooks.
 
@@ -22,4 +22,4 @@ attributes until the vault is updated (which will encrypt the vault in such a wa
 decrypt it). Re-encrypt the vault with the following command:
 
   knife vault refresh <%= cookbook_name %> db_credentials --mode client
-<% end %>
+<% end -%>

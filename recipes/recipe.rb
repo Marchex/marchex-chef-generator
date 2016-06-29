@@ -27,4 +27,4 @@ template recipe_path do
   helpers(ChefDK::Generator::TemplateHelper)
 end
 
-include_recipe 'marchex-chef-generator::encrypted_data_bag_examples' if defined?(context.include_encrypted_data_bag_examples)
+include_recipe 'marchex-chef-generator::chef-vault_examples' if ( defined?(context.include_chef-vault_examples) && (context.include_chef-vault_examples == true) )

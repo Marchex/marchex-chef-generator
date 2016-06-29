@@ -11,14 +11,15 @@
 #                                                     #
 ### DO NOT PUT CODE HERE                            ###
 <% end -%>
-<% if defined?(include_encrypted_data_bag_examples) -%>
-# Load chef-vault in order to access encrypted data bag
+<% if ( defined?(context.include_chef-vault_examples) && (context.include_chef-vault_examples == true) ) -%>
+
+# Load chef-vault in order to access vault
 include_recipe 'chef-vault'
-# Load encrypted data bag
+# Load chef-vault item
 db_credentials = chef_vault_item('<%= cookbook_name %>', 'database_credentials')
 
 # Create file with secrets
-template "/tmp/data_bag_secrets.conf" do
+template "/tmp/chef-vault_secrets.conf" do
   owner     'root'
   group     'root'
   mode      '0400'

@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
 require 'tty-prompt'
 require 'mixlib/shellout'
+require_relative 'lib/launch_screen.rb'
+
+launch_screen
 
 # Check that we have what we need to create/modify git repo
 def check_repo_prerequisites
@@ -34,17 +37,17 @@ cookbook_types = {
   custom: {
       description:      "a custom, marchex-specific cookbook",
       name_regex:       /.*/,
-      name_hint:        "Clear, short, readable cookbook name that others will understand (good: 'autobot', bad: 'ci-asdfsvc')",
+      name_hint:        "Clear, short, readable cookbook name that others will understand (good: autobot, bad: ci-asdfsvc)",
       name_error:       "Must be a word." },
     environment: {
-      description:      "An environment cookbook to define attributes (e.g. DNS/LDAP/NTP servers for a POP)",
+      description:      "an environment AKA POP cookbook to define attributes (e.g. DNS/LDAP/NTP servers for a POP)",
       name_regex:       /^pop_\w+-\w+$/,
       name_hint:        "Must follow pop_<type>-<location> pattern, e.g. 'pop_di-sea1', 'pop_qa-som1', 'pop_prod-aws-us-west-2-vpc2'.",
       name_error:       "Hint: pop_<type/env>-<location> e.g. pop_prod-som1, pop_qa-aws-us-east-1-vpc3." },
     role: {
       description:      "a role cookbook to include other recipes and set attributes (e.g. role_vmbuilder includes ansible and autobot cookbooks)",
       name_regex:       /^role_\w+/,
-      name_hint:        "Clear, short, readable name beginning with role_ that describes what this cookbook will do (good: role_vmbuilder, bad: 'role_citssvc')",
+      name_hint:        "Clear, short, readable name beginning with role_ that describes what this cookbook will do (good: role_vmbuilder, bad: role_citssvc)",
       name_error:       "Must begin with role_." },
 }
 
@@ -57,7 +60,7 @@ prompt = TTY::Prompt.new
 
 # Find out which type of cookbook they want
 puts "Please choose from the following types of cookbooks:\n\n"
-cookbook_types.each{ |name,metadata| puts "#{name} - #{metadata[:description]}" }
+cookbook_types.each{ |name,metadata| puts "#{name}".ljust(15) << "- #{metadata[:description]}".ljust(10) }
 puts "\n"
 
 # Find cookbook type
@@ -65,7 +68,7 @@ cookbook_type = prompt.select("Cookbook type: ", cookbook_types.keys, convert: :
 
 # Ask if they want chef-vault examples
 if (cookbook_type == :custom)
-  answers[:include_chef_vault_examples] = prompt.ask('Include chef-vault examples (for rendering sensitive data e.g. passwords/private keys)?', default: false, convert: :bool)
+  answers[:include_chef_vault_examples] = prompt.ask('Include chef-vault examples? (Usefil for handling sensitive data e.g. passwords/private keys)', default: 'No', convert: :bool)
 end
 
 # Give the user a hint as to cookbook naming

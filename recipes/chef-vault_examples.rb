@@ -18,7 +18,7 @@ directory data_bag_example_dir do
 end
 
 cookbook_file "#{data_bag_example_dir}/database_credentials.json" do
-  source 'encrypted_data_bag_example_contents.json'
+  source 'chef-vault_example_contents.json'
   action :create_if_missing
 end
 
