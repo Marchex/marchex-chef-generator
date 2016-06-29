@@ -16,9 +16,10 @@ def build_attributes(hash, context=nil)
     if val.is_a?(Hash)
       build_attributes(val, key)
     elsif val.is_a?(Array)
-      @@attrs << "set_array_attribute( 'normal', \"#{current_context}['#{key}']\",\n  [\n    "
-      @@attrs << "#{val.map{|v| "\"#{v}\"" }.join(",\n    ")}"
-      @@attrs << "\n  ])\n"
+      @@attrs << "set_array_attribute( 'normal', \"#{current_context}['#{key}']\",\n"
+      @@attrs << "%20s %s" % [" ", "[\n"] # 20 spaces, then [ and a newline
+      @@attrs << "#{val.map{|v| "%22s %s" % [" ", "\"#{v}\"" ] }.join(",\n")}\n" # 22 spaces, then the array values
+      @@attrs << "%20s %s" % [" ", "])\n"] # 20 spaces, then ]) and a newline
     else
       @@attrs << "node.normal#{current_context}[\"#{key}\"] = '#{val}'\n"
     end
