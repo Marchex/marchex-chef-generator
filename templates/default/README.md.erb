@@ -12,7 +12,9 @@ TODO: Update with valid entries for your cookbook/recipe.
 
   knife vault create <%= cookbook_name %> db_credentials '{ "username": "foo", "password": "bar" }'
   -S "role:my-awesome-role"
-  -A "my_username" --mode client
+
+In order to ensure that you give access to this vault to other chef server admins, make sure that you've performed the
+steps [on the wiki](http://wiki.marchex.com/index.php/Setting_up_knife#Install_and_test_the_Marchex-specific_chef_templates_and_rules)
 
 The -S argument is the standard chef SOLR search for clients (e.g. fqdn:foo.marchex.com). To see which nodes will match
 a given string, do a knife search node "<search string>" with the same argument. Each node returned from the search
