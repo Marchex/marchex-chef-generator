@@ -30,6 +30,16 @@ describe '<%= cookbook_name %>::<%= recipe_name %>' do
         expect(content).to include("password: my_super_secret_password")
       }
     end
-  <% end -%>
+    <% end -%>
+    <% if ( defined?(cookbook_type) && cookbook_type == 'environment_cookbook' ) -%>
+    let(:node) { chef_run.node }
+
+    it "has the attributes set that are required for every POP" do
+      expect(node["ntp"]["servers"]).to_not be_nil
+      expect(node["resolver"]["nameservers"]).to_not be_nil
+      expect(node["resolver"]["search"]).to_not be_nil
+      expect(node["mchx-auth"]["ldap_servers"]).to_not be_nil
+    end
+    <% end -%>
   end
 end
