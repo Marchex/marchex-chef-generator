@@ -17,7 +17,11 @@ def build_attributes(hash, context=nil)
     elsif val.is_a?(Array)
       @@attrs << "set_array_attribute( 'force_default', \"#{current_context}['#{key}']\",\n"
       @@attrs << "%20s %s" % [" ", "[\n"] # 20 spaces, then [ and a newline
-      @@attrs << "#{val.map{|v| "%22s %s" % [" ", "\"#{v}\"" ] }.join(",\n")}\n" # 22 spaces, then the array values
+      if (val.select{|e| e.is_a?(Hash) } != []) # Returns any entries in the array that are Hashes, otherwise an empty array
+        @@attrs << "#{val.map{|v| "%22s %s" % [" ", "#{v}" ] }.join(",\n")}\n" # 22 spaces, then the hash values
+      else
+        @@attrs << "#{val.map{|v| "%22s %s" % [" ", "\"#{v}\"" ] }.join(",\n")}\n" # 22 spaces, then the array values
+      end
       @@attrs << "%20s %s" % [" ", "])\n"] # 20 spaces, then ]) and a newline
     else
       @@attrs << "node.force_default#{current_context}['#{key}'] = '#{val}'\n"
