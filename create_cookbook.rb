@@ -127,6 +127,10 @@ else
     sleep(3)
     # Set up master branch protection rules
     shell_command("github_protect_branch -o marchex-chef -r #{cookbook_name} -s 'chef_delivery/verify/lint' -s 'chef_delivery/verify/syntax' -s 'chef_delivery/verify/unit' -u chef-delivery")
+    # Add project to delivery server
+    shell_command("delivery init --repo-name #{cookbook_name} --github marchex-chef --server delivery.marchex.com --ent marchex --org marchex --skip-build-cookbook --user #{ENV['USER']}", cookbook_name)
+    # Clean up unecessary branch that delivery creates
+    shell_command("git checkout master && git branch -D add-delivery-config", cookbook_name)
   end
 end
 
