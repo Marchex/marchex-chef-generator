@@ -19,7 +19,7 @@ platforms:
 <% %w(12.6.0 latest).each do |chef_version| %>
   - name: ubuntu-12.04-<%= chef_version %>
     driver:
-      image_id: ami-5ff8e96f
+      image_id: ami-0239c162
     driver_config:
       provision: true
       require_chef_omnibus: <%= chef_version %>
