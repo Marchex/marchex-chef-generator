@@ -13,7 +13,7 @@ provisioner:
   data_path: test/shared
 
 transport:
-  ssh_key: <%%= ENV['KITCHEN_EC2_SSH_KEY_PATH'] || 'tools-team' %>
+  ssh_key: <%%= ENV['KITCHEN_EC2_SSH_KEY_PATH'] %>
   username: ubuntu
   connection_timeout:
 
