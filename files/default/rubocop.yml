@@ -6,6 +6,13 @@ AllCops:
 Metrics/LineLength:
   Enabled: false
 
+Style/RegexpLiteral:
+  EnforcedStyle: mixed
+  # slashes: Always use slashes.
+  # percent_r: Always use %r.
+  # mixed: Use slashes on single-line regexes, and %r on multi-line regexes.
+  AllowInnerSlashes: true
+
 Style/HashSyntax:
   Enabled: false
 
