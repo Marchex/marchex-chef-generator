@@ -6,24 +6,26 @@ driver:
   subnet_id: subnet-2a251342
   instance_type: t2.micro
   tags:
-    Name: <%= ENV['KITCHEN_INSTANCE_NAME'] || 'delivery-sugar-kitchen' %>
+    Name: <%%= ENV['KITCHEN_INSTANCE_NAME'] || 'test kitchen instance' %>
 
 provisioner:
   name: chef_zero
+  data_path: test/shared
 
 transport:
-  ssh_key: <%= ENV['KITCHEN_EC2_SSH_KEY_PATH'] %>
+  ssh_key: <%%= ENV['KITCHEN_EC2_SSH_KEY_PATH'] || 'tools-team' %>
   username: ubuntu
+  connection_timeout:
 
 platforms:
-<% %w(12.6.0 latest).each do |chef_version| %>
-  - name: ubuntu-12.04-<%= chef_version %>
+<%% %w(12.6.0).each do |chef_version| %>
+  - name: ubuntu-12.04-<%%= chef_version %>
     driver:
       image_id: ami-86688bb5
     driver_config:
       provision: true
-      require_chef_omnibus: <%= chef_version %>
-<% end %>
+      require_chef_omnibus: <%%= chef_version %>
+<%% end %>
 
 suites:
   - name: default
