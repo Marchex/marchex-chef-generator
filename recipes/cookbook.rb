@@ -53,11 +53,6 @@ directory "#{cookbook_dir}/test/integration/helpers/serverspec" do
   recursive true
 end
 
-cookbook_file "#{cookbook_dir}/test/integration/helpers/serverspec/Gemfile" do
-  source 'Gemfile_serverspec'
-  action :create_if_missing
-end
-
 remote_directory "#{cookbook_dir}/.delivery" do
   source "delivery-config"
 end
