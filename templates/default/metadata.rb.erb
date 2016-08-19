@@ -13,7 +13,7 @@ version '0.1.0'
 
 # DO NOT specify version constraints for marchex-authored cookbooks, just use 'depends' - version control is provided by delivery
 # example:
-depends 'mchx-chef-helpers'
+depends 'mchx_chef_helpers'
 <% if defined?(role_cookbook_dependencies) -%>
 <%= role_cookbook_dependencies.map{ |d| "depends '#{d[:cookbook_name]}'" }.join("\n") %>
 <% end -%>

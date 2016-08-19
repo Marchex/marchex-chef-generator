@@ -37,19 +37,19 @@ end
 cookbook_types = {
   custom_cookbook: {
     description:      "a custom, marchex-specific cookbook",
-    name_regex:       /.*/,
+    name_regex:       /^[a-zA-Z_0-9]+$/,
     name_hint:        "Clear, short, readable cookbook name that others will understand (good: autobot, bad: ci-asdfsvc)",
-    name_error:       "Must be a word." },
+    name_error:       "Must be an alphanumeric word without hyphens." },
   environment_cookbook: {
     description:      "an environment AKA POP cookbook to define attributes (e.g. DNS/LDAP/NTP servers for a POP)",
-    name_regex:       /^pop_\w+-\w+$/,
-    name_hint:        "Must follow pop_<type>-<location> pattern, e.g. 'pop_di-sea1', 'pop_qa-som1', 'pop_prod-aws-us-west-2-vpc2'.",
-    name_error:       "Hint: pop_<type/env>-<location> e.g. pop_prod-som1, pop_qa-aws-us-east-1-vpc3." },
+    name_regex:       /^pop_\w+_\w+$/,
+    name_hint:        "Must follow pop_<type>_<location> pattern, e.g. 'pop_di_sea1', 'pop_qa_som1', 'pop_prod_aws_us_west_2_vpc2'.",
+    name_error:       "Hint: pop_<type/env>_<location> e.g. pop_prod_som1, pop_qa_aws_us_east_1_vpc3 (no hyphens)." },
   role_cookbook: {
     description:      "a role cookbook to include other recipes and set attributes (e.g. role_vmbuilder includes ansible and autobot cookbooks)",
-    name_regex:       /^role_\w+/,
+    name_regex:       /^role_[a-zA-Z0-9_]+$/,
     name_hint:        "Clear, short, readable name beginning with role_ that describes what this cookbook will do (good: role_vmbuilder, bad: role_citssvc)",
-    name_error:       "Must begin with role_." },
+    name_error:       "Must begin with role_, be alphanumeric, and not include hyphens" },
 }
 
 
