@@ -4,5 +4,5 @@ gem 'rake'
 gem 'chef'
 
 group :test do
-  gem 'chef-vault-testfixtures', '~> 0.4.1'
+  gem 'chef-vault-testfixtures', '>= 0.4.1'
 end
