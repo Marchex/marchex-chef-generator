@@ -7,6 +7,8 @@ driver:
   instance_type: t2.micro
   tags:
     Name: <%%= ENV['KITCHEN_INSTANCE_NAME'] || 'test kitchen instance' %>
+    team: Tools
+    project: test-kitchen
 
 provisioner:
   name: chef_zero
