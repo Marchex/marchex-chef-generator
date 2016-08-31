@@ -8,8 +8,8 @@ launch_screen
 
 # Check that we have what we need to create/modify git repo
 def check_repo_prerequisites
-  unless ENV['MARCHEX_GITHUB_TOKEN']
-    puts "MARCHEX_GITHUB_TOKEN environment variable not set - can't proceed with repository creation."
+  unless ENV['GITHUB_TOKEN']
+    puts "GITHUB_TOKEN environment variable not set - can't proceed with repository creation."
     return false
   end
 
@@ -37,19 +37,19 @@ end
 cookbook_types = {
   custom_cookbook: {
     description:      "a custom, marchex-specific cookbook",
-    name_regex:       /^[a-zA-Z_0-9]+$/,
-    name_hint:        "Clear, short, readable cookbook name that others will understand (good: autobot, bad: ci-asdfsvc)",
-    name_error:       "Must be an alphanumeric word without hyphens." },
+    name_regex:       /^mchx_[a-zA-Z_0-9]+$/,
+    name_hint:        "Clear, short, readable cookbook name (MUST begin with 'mchx_' that others will understand (good: mchx_autobot, bad: mchx_ci_asdfsvc)",
+    name_error:       "Must be an alphanumeric word without hyphens, beginning in mchx_." },
   environment_cookbook: {
     description:      "an environment AKA POP cookbook to define attributes (e.g. DNS/LDAP/NTP servers for a POP)",
     name_regex:       /^pop_\w+_\w+$/,
     name_hint:        "Must follow pop_<type>_<location> pattern, e.g. 'pop_di_sea1', 'pop_qa_som1', 'pop_prod_aws_us_west_2_vpc2'.",
     name_error:       "Hint: pop_<type/env>_<location> e.g. pop_prod_som1, pop_qa_aws_us_east_1_vpc3 (no hyphens)." },
-  role_cookbook: {
-    description:      "a role cookbook to include other recipes and set attributes (e.g. role_vmbuilder includes ansible and autobot cookbooks)",
-    name_regex:       /^role_[a-zA-Z0-9_]+$/,
-    name_hint:        "Clear, short, readable name beginning with role_ that describes what this cookbook will do (good: role_vmbuilder, bad: role_citssvc)",
-    name_error:       "Must begin with role_, be alphanumeric, and not include hyphens" },
+  hostclass_cookbook: {
+    description:      "a hostclass cookbook to include other recipes and set attributes (e.g. hostclass_vmbuilder includes mchx_ansible and mchx_autobot cookbooks)",
+    name_regex:       /^hostclass_[a-zA-Z0-9_]+$/,
+    name_hint:        "Clear, short, readable name beginning with hostclass_ that describes what this cookbook will do (good: hostclass_vmbuilder, bad: hostclass_citssvc)",
+    name_error:       "Must begin with hostclass_, be alphanumeric, and not include hyphens" },
 }
 
 
@@ -75,7 +75,7 @@ elsif (cookbook_type == :environment_cookbook)
     answers[:source_environment] = prompt.ask('Enter source environment name: ', convert: :string)
     answers[:environment_attributes_file] = load_source_environment(answers[:source_environment])
   end
-elsif (cookbook_type == :role_cookbook)
+elsif (cookbook_type == :hostclass_cookbook)
   if(prompt.ask("Are you migrating from an existing role?", default: 'No', convert: :bool))
     answers[:source_role] = prompt.ask('Enter source role name: ', convert: :string)
     answers[:role_attributes_file] = load_source_role(answers[:source_role])
@@ -93,7 +93,7 @@ cookbook_name = prompt.ask('cookbook name: ') do |q|
   if answers.has_key?(:source_environment)
     q.default "pop_#{answers[:source_environment]}"
   elsif answers.has_key?(:source_role)
-    q.default "role_#{answers[:source_role]}"
+    q.default "hostclass_#{answers[:source_role].gsub('role_','')}"
   end
 end
 
@@ -124,7 +124,8 @@ else
     shell_command("git commit -m 'Initial commit.'", cookbook_name)
     shell_command("git push origin master", cookbook_name)
     # Running github_protect_branch immediately after the initial push fails sometimes, so sleep for 3 seconds
-    sleep(3)
+    prompt.say("Sleeping for 5 seconds after repo creation before proceeding...", color: :bright_yellow)
+    sleep(5)
     # Set up master branch protection rules
     shell_command("github_protect_branch -o marchex-chef -r #{cookbook_name} -s 'chef_delivery/verify/lint' -s 'chef_delivery/verify/syntax' -s 'chef_delivery/verify/unit' -u chef-delivery")
     # Add project to delivery server
