@@ -21,9 +21,9 @@ def do_init_repo(repo_name)
       # Set up master branch protection rules
       shell_command("github_protect_branch -o marchex-chef -r #{repo_name} -s 'chef_delivery/verify/lint' -s 'chef_delivery/verify/syntax' -s 'chef_delivery/verify/unit' -u chef-delivery")
       # Add project to delivery server
-      ##shell_command("delivery init --repo-name #{repo_name} --github marchex-chef --server delivery.marchex.com --ent marchex --org marchex --skip-build-cookbook --user #{ENV['USER']}", repo_name)
+      shell_command("delivery init --repo-name #{repo_name} --github marchex-chef --server delivery.marchex.com --ent marchex --org marchex --skip-build-cookbook --user #{ENV['USER']}", repo_name)
       # Push delivery pipeline branch and prompt user to create a PR
-      ##shell_command("git push origin initialize-delivery-pipeline", repo_name)
+      shell_command("git push origin initialize-delivery-pipeline", repo_name)
       prompt.say("Please go to #{repo_url}/compare/initialize-delivery-pipeline?expand=1 and create a pull request.", color: :bright_green)
     end
   end
