@@ -1,2 +1,3 @@
 .chef/*
 !.chef/knife.rb.example
+.idea/

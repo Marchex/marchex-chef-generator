@@ -3,6 +3,7 @@ require 'tty-prompt'
 require 'mixlib/shellout'
 require_relative 'lib/launch_screen.rb'
 require_relative 'lib/migrate.rb'
+require_relative 'lib/protect_branch'
 
 launch_screen
 
@@ -13,7 +14,7 @@ def check_repo_prerequisites
     return false
   end
 
-  required_commands = %w( hub github_protect_branch curl )
+  required_commands = %w( hub curl )
   required_commands.each { |c|
     command_check = Mixlib::ShellOut.new("which #{c}").run_command
     if(command_check.exitstatus != 0)
@@ -127,7 +128,8 @@ else
     prompt.say("Sleeping for 5 seconds after repo creation before proceeding...", color: :bright_yellow)
     sleep(5)
     # Set up master branch protection rules
-    shell_command("github_protect_branch -o marchex-chef -r #{cookbook_name} -s 'chef_delivery/verify/lint' -s 'chef_delivery/verify/syntax' -s 'chef_delivery/verify/unit' -u chef-delivery")
+    MchxChefGen.protect_branch(ENV['GITHUB_TOKEN'], 'marchex-chef', cookbook_name)
+    #shell_command("github_protect_branch -o marchex-chef -r #{cookbook_name} -s 'chef_delivery/verify/lint' -s 'chef_delivery/verify/syntax' -s 'chef_delivery/verify/unit' -u chef-delivery")
     # Add project to delivery server
     shell_command("delivery init --repo-name #{cookbook_name} --github marchex-chef --server delivery.marchex.com --ent marchex --org marchex --skip-build-cookbook --user #{ENV['USER']}", cookbook_name)
     # Push delivery pipeline branch and prompt user to create a PR
