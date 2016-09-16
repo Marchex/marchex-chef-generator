@@ -4,6 +4,7 @@ require 'mixlib/shellout'
 require_relative 'lib/launch_screen.rb'
 require_relative 'lib/migrate.rb'
 require_relative 'lib/protect_branch'
+require_relative 'lib/repo.rb'
 
 launch_screen
 
@@ -105,37 +106,21 @@ generator_options << answers.map{ |k,v| "-a #{k}=#{v}" }.join(" ")
 generator_command = "chef generate cookbook -g . #{generator_options}"
 prompt.say("Generating #{cookbook_name} with command '#{generator_command}'\n... please wait ...", color: :bright_green)
 shell_command(generator_command)
-
 prompt.say("Cookbook generated successfully in ./#{cookbook_name} directory.", color: :bright_green)
+
+inspec_name = "tests_#{cookbook_name}"
+inspec_command = "inspec init profile #{inspec_name}"
+prompt.say("Generating #{inspec_name} with command '#{inspec_command}'\n... please wait ...", color: :bright_green)
+shell_command(inspec_command)
+prompt.say("Test cookbook generated successfully in ./#{inspec_name} directory.", color: :bright_green)
 
 # Ask if they want to create a repo, if they have the required commands/env
 unless check_repo_prerequisites
   prompt.say("Can't proceed with repo creation and initialization due to missing prerequisites.", color: :bright_red)
 else
-  repo_url = "https://github.marchex.com/marchex-chef/#{cookbook_name}"
-  # See if repo already exists
-  prompt.say("Checking to see whether #{repo_url} already exists...", color: :bright_yellow)
-  repo_check_http_code =  Mixlib::ShellOut.new("curl -IsS -o /dev/null --connect-timeout 3 -w '%\{http_code\}' #{repo_url}").run_command.stdout
-  if (repo_check_http_code != "404")
-    prompt.say("repository already exists at #{repo_url} -- not creating/modifying it.", color: :bright_yellow)
-  elsif(prompt.yes?("Initialize repo at #{repo_url}?"))
-    shell_command("git init #{cookbook_name}")
-    shell_command("hub create marchex-chef/#{cookbook_name}", cookbook_name)
-    shell_command("git add .", cookbook_name)
-    shell_command("git commit -m 'Initial commit.'", cookbook_name)
-    shell_command("git push origin master", cookbook_name)
-    # Running github_protect_branch immediately after the initial push fails sometimes, so sleep for 3 seconds
-    prompt.say("Sleeping for 5 seconds after repo creation before proceeding...", color: :bright_yellow)
-    sleep(5)
-    # Set up master branch protection rules
-    MchxChefGen.protect_branch(ENV['GITHUB_TOKEN'], 'marchex-chef', cookbook_name)
-    #shell_command("github_protect_branch -o marchex-chef -r #{cookbook_name} -s 'chef_delivery/verify/lint' -s 'chef_delivery/verify/syntax' -s 'chef_delivery/verify/unit' -u chef-delivery")
-    # Add project to delivery server
-    shell_command("delivery init --repo-name #{cookbook_name} --github marchex-chef --server delivery.marchex.com --ent marchex --org marchex --skip-build-cookbook --user #{ENV['USER']}", cookbook_name)
-    # Push delivery pipeline branch and prompt user to create a PR
-    shell_command("git push origin initialize-delivery-pipeline", cookbook_name)
-    prompt.say("Please go to #{repo_url}/compare/initialize-delivery-pipeline?expand=1 and create a pull request.", color: :bright_green)
-  end
+  do_init_repo(cookbook_name)
+  do_init_repo(inspec_name)
 end
 
-prompt.say("Cookbook initialized! Now, 'cd #{cookbook_name}' and run 'rake unit' to run tests.", color: :bright_green)
+prompt.say("Cookbook initialized! Now, `cd #{cookbook_name}` and run 'rake unit' to run tests.
+And `cd #{inspec_name}` to run and modify integration tests.", color: :bright_green)
