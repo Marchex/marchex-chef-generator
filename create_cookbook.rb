@@ -54,6 +54,12 @@ cookbook_types = {
     name_error:       "Must begin with hostclass_, be alphanumeric, and not include hyphens" },
 }
 
+unless check_repo_prerequisites
+  prompt = TTY::Prompt.new
+  if prompt.yes?("Do you want to stop and resolve your missing prerequisites first (recommended)?")
+    exit -1
+  end
+end
 
 # Allow autovivification of hash
 answers = Hash.new { |h, k| h[k] = { } }
