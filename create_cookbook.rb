@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 require 'tty-prompt'
 require 'mixlib/shellout'
-require_relative 'lib/launch_screen.rb'
-require_relative 'lib/migrate.rb'
-require_relative 'lib/protect_branch'
-require_relative 'lib/repo.rb'
+require_relative 'lib/launch_screen'
+require_relative 'lib/migrate'
+require_relative 'lib/octo_wrapper'
+require_relative 'lib/repo'
 
 launch_screen
 
@@ -15,7 +15,7 @@ def check_repo_prerequisites
     return false
   end
 
-  required_commands = %w( hub curl )
+  required_commands = %w( curl )
   required_commands.each { |c|
     command_check = Mixlib::ShellOut.new("which #{c}").run_command
     if(command_check.exitstatus != 0)
@@ -114,12 +114,12 @@ prompt.say("Generating #{inspec_name} with command '#{inspec_command}'\n... plea
 shell_command(inspec_command)
 prompt.say("Test cookbook generated successfully in ./#{inspec_name} directory.", color: :bright_green)
 
-# Ask if they want to create a repo, if they have the required commands/env
+# Ask  if they want to create a repo, if they have the required commands/env
 unless check_repo_prerequisites
   prompt.say("Can't proceed with repo creation and initialization due to missing prerequisites.", color: :bright_red)
 else
-  do_init_repo(cookbook_name)
-  do_init_repo(inspec_name)
+  MchxChefGen.do_init_repo(cookbook_name)
+  MchxChefGen.do_init_repo(inspec_name)
 end
 
 prompt.say("Cookbook initialized! Now, `cd #{cookbook_name}` and run 'rake unit' to run tests.

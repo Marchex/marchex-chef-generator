@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe 'MchxChefGen::protect_branch' do
+describe 'MchxChefGen::octo_wrapper' do
   token = nil
   org = 'marchex-chef'
   repo = 'hostclass_publicftp'
@@ -17,5 +17,11 @@ describe 'MchxChefGen::protect_branch' do
 
     result = MchxChefGen.protect_branch(token, org, repo)
     expect(result.url).to eq('https://github.marchex.com/api/v3/repos/marchex-chef/hostclass_publicftp/branches/master/protection')
+  end
+
+  it 'creates a new get repo' do
+
+    result = MchxChefGen.create_repo(token, 'jcarter/foobar1' )
+    expect(result).to_not be_nil
   end
 end
