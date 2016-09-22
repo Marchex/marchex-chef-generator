@@ -144,5 +144,13 @@ else
   MchxChefGen.do_init_repo(inspec_name)
 end
 
-prompt.say("Cookbook initialized! Now, `cd #{cookbook_name}` and run 'rake unit' to run tests.
-And `cd #{inspec_name}` to run and modify integration tests.", color: :bright_green)
+
+cookbook_dir = cookbook_name
+inspec_dir = inspec_name
+if MchxChefGen.basedir
+  cookbook_dir  = MchxChefGen.basedir + '/cookbooks/' + cookbook_dir
+  inspec_dir    = MchxChefGen.basedir + '/tests/' + inspec_dir
+end
+
+prompt.say("Cookbook initialized! Now, `cd #{cookbook_dir}` and run 'rake unit' to run tests.
+And `cd #{inspec_dir}` to run and modify integration tests.", color: :bright_green)

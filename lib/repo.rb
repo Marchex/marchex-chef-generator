@@ -1,3 +1,4 @@
+require 'fileutils'
 require 'tty-prompt'
 
 module MchxChefGen
@@ -23,7 +24,12 @@ module MchxChefGen
       end
       shell_command("git commit -m 'Initial commit.'", repo_name)
       shell_command("git push origin master", repo_name)
-      if repo_name !~ /^tests_/ then
+
+      if repo_name =~ /^tests_/ then
+        if self.basedir
+          FileUtils.mv(repo_name, "#{self.basedir}/tests/")
+        end
+      else
         # Running github_protect_branch immediately after the initial push fails sometimes, so sleep for 3 seconds
         prompt.say("Sleeping for 5 seconds after repo creation before proceeding...", color: :bright_yellow)
         sleep(5)
@@ -34,8 +40,24 @@ module MchxChefGen
         # Push delivery pipeline branch and prompt user to create a PR
         shell_command("git push origin initialize-delivery-pipeline", repo_name)
         prompt.say("Please go to #{repo_url}/compare/initialize-delivery-pipeline?expand=1 and create a pull request.", color: :bright_green)
+
+        if self.basedir
+          FileUtils.mv(repo_name, "#{self.basedir}/cookbooks/")
+        end
       end
     end
   end
+
+  def self.basedir
+      return @basedir if @basedir
+
+      basedir_file = "#{ENV['HOME']}/.marchex-chef-basedir"
+      if File.exist?(basedir_file)
+        @basedir = File.read(basedir_file).chomp
+      end
+
+      return @basedir
+  end
+
 end
 
