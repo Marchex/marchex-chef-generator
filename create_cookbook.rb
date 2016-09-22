@@ -129,9 +129,12 @@ prompt.say("Cookbook generated successfully in ./#{cookbook_name} directory.", c
 
 inspec_name = "tests_#{cookbook_name}"
 inspec_command = "inspec init profile #{inspec_name}"
-prompt.say("Generating #{inspec_name} with command '#{inspec_command}'\n... please wait ...", color: :bright_green)
-shell_command(inspec_command)
-prompt.say("Test cookbook generated successfully in ./#{inspec_name} directory.", color: :bright_green)
+
+unless File.exists?(inspec_name)
+  prompt.say("Generating #{inspec_name} with command '#{inspec_command}'\n... please wait ...", color: :bright_green)
+  shell_command(inspec_command)
+  prompt.say("Test cookbook generated successfully in ./#{inspec_name} directory.", color: :bright_green)
+end
 
 # Ask  if they want to create a repo, if they have the required commands/env
 unless check_repo_prerequisites
