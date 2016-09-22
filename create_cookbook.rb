@@ -122,7 +122,7 @@ end
 generator_options = "#{cookbook_name} "
 generator_options << answers.map{ |k,v| "-a #{k}=#{v}" }.join(" ")
 
-generator_command = "chef generate cookbook -g . #{generator_options}"
+generator_command = "chef generate cookbook -g ./skel/ #{generator_options}"
 prompt.say("Generating #{cookbook_name} with command '#{generator_command}'\n... please wait ...", color: :bright_green)
 shell_command(generator_command)
 prompt.say("Cookbook generated successfully in ./#{cookbook_name} directory.", color: :bright_green)
