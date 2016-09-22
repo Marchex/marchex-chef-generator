@@ -10,12 +10,7 @@ launch_screen
 
 # Check that we have what we need to create/modify git repo
 def check_repo_prerequisites
-  unless ENV['GITHUB_TOKEN']
-    puts "GITHUB_TOKEN environment variable not set - can't proceed with repository creation."
-    return false
-  end
-
-  required_commands = %w( curl )
+  required_commands = %w( curl delivery )
   required_commands.each { |c|
     command_check = Mixlib::ShellOut.new("which #{c}").run_command
     if(command_check.exitstatus != 0)
@@ -23,6 +18,23 @@ def check_repo_prerequisites
       return false
     end
   }
+
+  unless ENV['GITHUB_TOKEN']
+    puts "GITHUB_TOKEN environment variable not set - can't proceed with repository creation."
+    return false
+  end
+
+  # verify that delivery token is valid
+  begin
+    shell_command("delivery token --verify")
+  rescue
+    prompt = TTY::Prompt.new
+    prompt.say("DELVIERY TOKEN not set in ~/.delivery/api-tokens")
+    prompt.say("execute 'delivery token --verify' to reset your token.", color: :bright_yellow)
+
+    return false
+  end
+
   return true
 end
 
@@ -33,6 +45,7 @@ def shell_command(command, cwd=nil)
   cmd = Mixlib::ShellOut.new(command, :cwd => cwd)
   cmd.run_command
   cmd.error! # Display stdout if exit code was non-zero
+  cmd.exitstatus
 end
 
 # Cookbook type metadata
