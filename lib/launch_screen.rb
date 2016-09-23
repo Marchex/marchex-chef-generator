@@ -3,7 +3,7 @@ def launch_screen
     'The least likely can be the most dangerous',
     'To know others you must know yourself first',
     'Data is power',
-    'Maintainable code is a journey, not a destination'
+    'Power flows to the one who knows how'
     ]
 
   quote_block_length = 70

@@ -17,6 +17,7 @@ module MchxChefGen
       shell_command("git remote add origin git@github.marchex.com:marchex-chef/#{repo_name}.git", repo_name)
 
       shell_command("git add .", repo_name)
+      #  Inspec doesnt have a .gitignore, and doesnt allow for templating either
       if File.exists?(repo_name + '/.gitignore')
         shell_command("git add -f .gitignore", repo_name) #
       end

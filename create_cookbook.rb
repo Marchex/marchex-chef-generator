@@ -29,7 +29,7 @@ def check_repo_prerequisites
     shell_command("delivery token --verify")
   rescue
     prompt = TTY::Prompt.new
-    prompt.say("DELVIERY TOKEN not set in ~/.delivery/api-tokens")
+    prompt.say("DELIVERY TOKEN not set in ~/.delivery/api-tokens")
     prompt.say("execute 'delivery token --verify' to reset your token.", color: :bright_yellow)
 
     return false
