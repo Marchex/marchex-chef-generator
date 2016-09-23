@@ -17,7 +17,10 @@ module MchxChefGen
       shell_command("git remote add origin git@github.marchex.com:marchex-chef/#{repo_name}.git", repo_name)
 
       shell_command("git add .", repo_name)
-      shell_command("git add -f .gitignore", repo_name) #
+      #  Inspec doesnt have a .gitignore, and doesnt allow for templating either
+      if File.exists?(repo_name + '/.gitignore')
+        shell_command("git add -f .gitignore", repo_name) #
+      end
       shell_command("git commit -m 'Initial commit.'", repo_name)
       shell_command("git push origin master", repo_name)
       if repo_name !~ /^tests_/ then
@@ -26,8 +29,6 @@ module MchxChefGen
         sleep(5)
         # Set up master branch protection rules
         protect_branch(token, 'marchex-chef', repo_name)
-        # verify that delivery token is valid
-
         # Add project to delivery server
         shell_command("delivery init --repo-name #{repo_name} --github marchex-chef --server delivery.marchex.com --ent marchex --org marchex --skip-build-cookbook --user #{ENV['USER']}", repo_name)
         # Push delivery pipeline branch and prompt user to create a PR

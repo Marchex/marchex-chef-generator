@@ -3,9 +3,10 @@ def launch_screen
     'The least likely can be the most dangerous',
     'To know others you must know yourself first',
     'Data is power',
+    'Power flows to the one who knows how'
     ]
 
-  quote_block_length = 50
+  quote_block_length = 70
   quote_block = "/".ljust(quote_block_length-2, '─') << "\n" \
               <<  "/   #{quotes.sample}".ljust(quote_block_length, ' ') << " \\\n" \
               << "\\".ljust(quote_block_length, ' ') << " \/\n" \
