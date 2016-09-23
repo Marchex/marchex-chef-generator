@@ -4,7 +4,7 @@ require 'mixlib/shellout'
 require_relative 'lib/launch_screen'
 require_relative 'lib/migrate'
 require_relative 'lib/octo_wrapper'
-require_relative 'lib/repo'
+require_relative 'lib/repository'
 
 launch_screen
 
@@ -137,20 +137,14 @@ unless File.exists?(inspec_name)
 end
 
 # Ask  if they want to create a repo, if they have the required commands/env
+@ckbkrepo = MchxChefGen::Repository.new(cookbook_name, 'cookbooks')
+@inspecrepo = MchxChefGen::Repository.new(inspec_name, 'tests')
 unless check_repo_prerequisites
   prompt.say("Can't proceed with repo creation and initialization due to missing prerequisites.", color: :bright_red)
 else
-  MchxChefGen.do_init_repo(cookbook_name)
-  MchxChefGen.do_init_repo(inspec_name)
+  @ckbkrepo.init_repo
+  @inspecrepo.init_repo
 end
 
-
-cookbook_dir = cookbook_name
-inspec_dir = inspec_name
-if MchxChefGen.basedir
-  cookbook_dir  = MchxChefGen.basedir + '/cookbooks/' + cookbook_dir
-  inspec_dir    = MchxChefGen.basedir + '/tests/' + inspec_dir
-end
-
-prompt.say("Cookbook initialized! Now, `cd #{cookbook_dir}` and run 'rake unit' to run tests.
-And `cd #{inspec_dir}` to run and modify integration tests.", color: :bright_green)
+prompt.say("Cookbook initialized! Now, `cd #{@ckbkrepo.get_repodir}` and run 'rake unit' to run tests.
+And `cd #{@inspecrepo.get_repodir}` to run and modify integration tests.", color: :bright_green)
