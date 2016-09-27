@@ -6,6 +6,9 @@ provisioner:
   name: chef_zero
   chef_omnibus_install_options: -d /tmp/vagrant-cache/vagrant_omnibus
 
+verifier:
+  name: inspec
+
 platforms:
 <%% %w(12.6.0 latest).each do |chef_version| %>
    - name: ubuntu-12.04-pristine-<%%= chef_version %>
@@ -39,3 +42,8 @@ suites:
     run_list:
       - recipe[<%= cookbook_name %>::default]
     attributes:
+    verifier:
+      inspec_tests:
+      - https://github.marchex.com/marchex-chef/tests_<%= cookbook_name %>/archive/master.tar.gz
+      # uncomment for local testing
+      #- file://../../tests/tests_<%= cookbook_name %>
