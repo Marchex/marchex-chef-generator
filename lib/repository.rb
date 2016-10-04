@@ -4,7 +4,7 @@ require 'tty-prompt'
 module MchxChefGen
   class Repository
 
-    def initialize(cookbook_name, rel_path, basedir = '.')
+    def initialize(cookbook_name, rel_path, basedir = nil)
       @name = cookbook_name
       @rel_path = rel_path
       @basedir = basedir # defaults to current working directory
@@ -55,6 +55,8 @@ module MchxChefGen
       basedir_file = home + '/.marchex-chef-basedir'
       if File.exist?(basedir_file)
         @basedir = File.read(basedir_file).chomp
+      else
+        @basedir = '.'
       end
       @basedir
     end
@@ -64,7 +66,7 @@ module MchxChefGen
       set_basedir if @basedir.nil?
       @basedir
     end
-
+    # @rel_path is either /cookbooks or /tests
     def get_repodir
       get_basedir + '/' + @rel_path + '/' + @name
     end

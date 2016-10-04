@@ -4,13 +4,14 @@ describe 'MchxChefGen::Repository' do
   before (:context) do
   end
 
-  it 'set_basedir returns nil if file doesnt exist' do
+  it 'set_basedir returns \'.\' if file doesn\' t exist' do
+    allow(File).to receive(:exist?).and_return(false)
     o = MchxChefGen::Repository.new('name', 'path')
     result = o.set_basedir('name')
-    expect(result).to be_nil
+    expect(result).to eq('.')
   end
 
-  it 'set_bassedir returns string if file exists' do
+  it 'set_basedir returns string if file exists' do
     allow(File).to receive(:exist?).and_return(true)
     allow(File).to receive(:read).and_return('/site/marchex-chef')
     o = MchxChefGen::Repository.new('name', 'path')
@@ -18,7 +19,20 @@ describe 'MchxChefGen::Repository' do
     expect(result).to eq('/site/marchex-chef')
   end
 
-  it 'get_repodir returns the correct path' do
+  it 'get_basedir returns \'.\' if file doesn\'t exist' do
+    allow(File).to receive(:exist?).and_return(false)
+    o = MchxChefGen::Repository.new('name', 'path')
+    expect(o.get_basedir).to eq('.')
+  end
+
+  it 'get_basedir returns string if file exists' do
+    allow(File).to receive(:exist?).and_return(true)
+    allow(File).to receive(:read).and_return('/site/marchex-chef')
+    o = MchxChefGen::Repository.new('name', 'path')
+    expect(o.get_basedir).to eq('/site/marchex-chef')
+  end
+  
+  it 'get_repodir returns the correct path when ' do
     allow(File).to receive(:exist?).and_return(true)
     allow(File).to receive(:read).and_return('/site/marchex-chef')
     o = MchxChefGen::Repository.new('name', 'path')
