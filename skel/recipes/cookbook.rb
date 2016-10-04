@@ -25,6 +25,11 @@ cookbook_file "#{cookbook_dir}/Berksfile" do
   action :create_if_missing
 end
 
+# Gemfile
+cookbook_file "#{cookbook_dir}/Gemfile" do
+  action :create_if_missing
+end
+
 # Rakefile
 cookbook_file "#{cookbook_dir}/Rakefile"
 
