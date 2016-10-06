@@ -68,10 +68,7 @@ cookbook_types = {
 }
 
 unless check_repo_prerequisites
-  prompt = TTY::Prompt.new
-  if prompt.yes?("Do you want to stop and resolve your missing prerequisites first (recommended)?")
-    exit -1
-  end
+  exit -1
 end
 
 # Allow autovivification of hash
@@ -138,13 +135,10 @@ end
 
 # Ask  if they want to create a repo, if they have the required commands/env
 @ckbkrepo = MchxChefGen::Repository.new(cookbook_name, 'cookbooks')
+@ckbkrepo.init_repo
+
 @inspecrepo = MchxChefGen::Repository.new(inspec_name, 'tests')
-unless check_repo_prerequisites
-  prompt.say("Can't proceed with repo creation and initialization due to missing prerequisites.", color: :bright_red)
-else
-  @ckbkrepo.init_repo
-  @inspecrepo.init_repo
-end
+@inspecrepo.init_repo
 
 prompt.say("Cookbook initialized! Now, `cd #{@ckbkrepo.get_repodir}` and run 'rake unit' to run tests.
 And `cd #{@inspecrepo.get_repodir}` to run and modify integration tests.", color: :bright_green)
