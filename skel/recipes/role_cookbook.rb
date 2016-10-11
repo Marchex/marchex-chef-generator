@@ -8,7 +8,7 @@ end
 # See if we're migrating from an existing environment
 if defined?(context.role_attributes_file)
   # Yes, migrate the environment attributes
-  include_recipe 'marchex-chef-generator::migrate_role'
+  include_recipe 'skel::migrate_role'
 else
   # No, just load the default example attributes
   template "#{cookbook_dir}/attributes/default.rb" do
