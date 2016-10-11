@@ -27,4 +27,4 @@ template recipe_path do
   helpers(ChefDK::Generator::TemplateHelper)
 end
 
-include_recipe 'marchex-chef-generator::chef-vault_examples' if ( defined?(context.include_chef_vault_examples) && (context.include_chef_vault_examples == 'true') )
+include_recipe 'skel::chef-vault_examples' if ( defined?(context.include_chef_vault_examples) && (context.include_chef_vault_examples == 'true') )

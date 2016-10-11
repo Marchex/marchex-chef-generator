@@ -7,6 +7,3 @@ source 'http://rubygems.sea.marchex.com' do
   gem 'marchex_helpers', '>= 0.1.12'
 end
 
-group :test do
-  gem 'chef-vault-testfixtures', '>= 0.4.1'
-end

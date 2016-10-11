@@ -1,7 +1,7 @@
 context = ChefDK::Generator.context
 cookbook_dir = File.join(context.cookbook_root, context.cookbook_name)
 
-require_relative '../lib/migrate.rb'
+require_relative '../../lib/migrate.rb'
 
 # Load attributes and run list from passed in role JSON
 role_attributes = load_attributes(context.role_attributes_file)

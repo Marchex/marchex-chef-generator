@@ -4,7 +4,7 @@ require 'mixlib/shellout'
 require_relative 'lib/launch_screen'
 require_relative 'lib/migrate'
 require_relative 'lib/octo_wrapper'
-require_relative 'lib/repo'
+require_relative 'lib/repository'
 
 launch_screen
 
@@ -68,10 +68,7 @@ cookbook_types = {
 }
 
 unless check_repo_prerequisites
-  prompt = TTY::Prompt.new
-  if prompt.yes?("Do you want to stop and resolve your missing prerequisites first (recommended)?")
-    exit -1
-  end
+  exit -1
 end
 
 # Allow autovivification of hash
@@ -112,9 +109,9 @@ cookbook_name = prompt.ask('cookbook name: ') do |q|
   q.modify :down, :trim # lowercase input and trim trailing/leading whitespace
   q.validate(cookbook_types[cookbook_type][:name_regex], cookbook_types[cookbook_type][:name_error])
   if answers.has_key?(:source_environment)
-    q.default "pop_#{answers[:source_environment]}"
+    q.default "pop_#{answers[:source_environment].gsub('-','_')}"
   elsif answers.has_key?(:source_role)
-    q.default "hostclass_#{answers[:source_role].gsub('role_','')}"
+    q.default "hostclass_#{answers[:source_role].gsub('role_','').gsub('-','_')}"
   end
 end
 
@@ -137,12 +134,11 @@ unless File.exists?(inspec_name)
 end
 
 # Ask  if they want to create a repo, if they have the required commands/env
-unless check_repo_prerequisites
-  prompt.say("Can't proceed with repo creation and initialization due to missing prerequisites.", color: :bright_red)
-else
-  MchxChefGen.do_init_repo(cookbook_name)
-  MchxChefGen.do_init_repo(inspec_name)
-end
+@ckbkrepo = MchxChefGen::Repository.new(cookbook_name, 'cookbooks')
+@ckbkrepo.init_repo
 
-prompt.say("Cookbook initialized! Now, `cd #{cookbook_name}` and run 'rake unit' to run tests.
-And `cd #{inspec_name}` to run and modify integration tests.", color: :bright_green)
+@inspecrepo = MchxChefGen::Repository.new(inspec_name, 'tests')
+@inspecrepo.init_repo
+
+prompt.say("Cookbook initialized! Now, `cd #{@ckbkrepo.get_repodir}` and run 'rake unit' to run tests.
+And `cd #{@inspecrepo.get_repodir}` to run and modify integration tests.", color: :bright_green)

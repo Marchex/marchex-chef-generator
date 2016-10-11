@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: build-cookbook
-# Recipe:: default
+# Recipe:: provision
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
-include_recipe 'delivery-truck::provision'
+include_recipe 'mchx_delivery_drone::provision'
