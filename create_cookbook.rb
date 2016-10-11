@@ -109,9 +109,9 @@ cookbook_name = prompt.ask('cookbook name: ') do |q|
   q.modify :down, :trim # lowercase input and trim trailing/leading whitespace
   q.validate(cookbook_types[cookbook_type][:name_regex], cookbook_types[cookbook_type][:name_error])
   if answers.has_key?(:source_environment)
-    q.default "pop_#{answers[:source_environment]}"
+    q.default "pop_#{answers[:source_environment].gsub('-','_')}"
   elsif answers.has_key?(:source_role)
-    q.default "hostclass_#{answers[:source_role].gsub('role_','')}"
+    q.default "hostclass_#{answers[:source_role].gsub('role_','').gsub('-','_')}"
   end
 end
 
