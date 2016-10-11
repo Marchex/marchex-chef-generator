@@ -1,6 +1,9 @@
 source 'https://rubygems.org'
-source 'http://rubygems.sea.marchex.com'
 
 gem 'rake'
 gem 'chef'
-gem 'marchex_helpers', '>= 0.1.5'
+
+source 'http://rubygems.sea.marchex.com' do
+  gem 'marchex_helpers', '>= 0.1.12'
+end
+

@@ -21,7 +21,6 @@ module MchxChefGen
         prompt.say("repository already exists at #{repo_url} -- not creating/modifying it.", color: :bright_yellow)
       elsif(prompt.yes?("Initialize repo at #{repo_url}?"))
         shell_command("git init #{@name}")
-        puts "REPO_NAME: #{@name}"
         MchxChefGen.create_repo(token, @name)
         shell_command("git remote add origin git@github.marchex.com:marchex-chef/#{@name}.git", @name)
 
