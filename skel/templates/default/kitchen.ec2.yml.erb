@@ -16,6 +16,7 @@ suites:
       publicftp:
         ignore_failure: true
     verifier:
+      name: inspec
       inspec_tests:
       - https://github.marchex.com/marchex-chef/tests_<%= cookbook_name %>/archive/master.tar.gz
       # uncomment for local testing
