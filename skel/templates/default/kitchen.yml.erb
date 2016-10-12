@@ -13,6 +13,7 @@ suites:
           chef_server_url: http://localhost:8889
       domain: marchex.com
     verifier:
+      name: inspec
       inspec_tests:
       - https://github.marchex.com/marchex-chef/tests_<%= cookbook_name %>/archive/master.tar.gz
       # uncomment for local testing
