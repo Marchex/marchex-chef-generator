@@ -1,6 +1,6 @@
 ---
 #<%% require 'marchex_helpers' %>
-<%%= MarchexHelpers.kitchen %>
+<%%= MarchexHelpers.kitchen( platforms: [:supported] ) %>
 
 suites:
   - name: default
