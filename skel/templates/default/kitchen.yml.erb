@@ -1,6 +1,6 @@
 ---
 #<%% require 'marchex_helpers' %>
-<%%= MarchexHelpers.kitchen %>
+<%%= MarchexHelpers.kitchen( platforms: [:supported] ) %>
 
 suites:
   - name: default
@@ -8,15 +8,11 @@ suites:
       - recipe[<%= cookbook_name %>::default]
       - recipe[pop_prod_sad::default]
     attributes:
-      chef_client:
-        config:
-          chef_server_url: http://localhost:8889
-      domain: marchex.com
+      domain: marchex.com  # req for mchx_pkgmanager
     verifier:
       name: inspec
       inspec_tests:
       - https://github.marchex.com/marchex-chef/tests_<%= cookbook_name %>/archive/master.tar.gz
       # uncomment for local testing
       #- file://../../tests/tests_<%= cookbook_name %>
-    provisioner:
-      data_bags_path: test/integration/data_bags
+

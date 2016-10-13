@@ -53,7 +53,7 @@ PLATFORMS
 
 DEPENDENCIES
   chef-api
-  octokit (= 4.3.1.pre1)
+  octokit (= 4.3.1.pre1)!
   rspec
   tty-prompt
 
