@@ -2,6 +2,10 @@ source 'https://rubygems.org'
 
 gem 'tty-prompt'
 gem 'chef-api'
-gem 'octokit', '= 4.3.1.pre1'
+source   'http://rubygems.sea.marchex.com' do
+  gem 'octokit', '= 4.3.1.pre1'
+end
 
-gem 'rspec'
+group :test do
+  gem 'rspec'
+end
