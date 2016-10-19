@@ -13,11 +13,6 @@
   "build_nodes": {},
   "dependencies": [],
   "delivery-truck": {
-    "lint": {
-      "foodcritic": {
-        "ignore_rules": [ "FC032" ]
-      }
-    },
     "publish": {
       "chef_server": true,
       "supermarket": "https://supermarket.marchex.com"
