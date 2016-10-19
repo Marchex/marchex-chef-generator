@@ -1,6 +1,9 @@
 # marchex-chef-generator
 Create skeletons of recipes/cookbooks/etc. that include Marchex-specific patterns/code/etc.
 
+# Install development kit
+Please install [mchx_dk](https://github.marchex.com/marchex-chef/mchx_dk) first.
+
 # creating a new cookbook
 Run 
 ```
