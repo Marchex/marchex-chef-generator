@@ -2,32 +2,33 @@
 
 task :default => [:list]
 
-desc "Lists all the tasks."
+desc "List all the tasks."
 task :list do
     puts "Tasks: \n- #{Rake::Task.tasks.join("\n- ")}"
 end
 
-desc "Checks for required dependencies."
+desc "Check for required dependencies."
 task :check do
   sh "bundle check"
 end
 
-desc "Runs chefspec tests."
+desc "Run chefspec tests."
 task :chefspec do
     sh "rspec spec"
 end
 
-desc "Runs kitchen tests."
+desc "Run kitchen tests."
 task :kitchen do
     sh "kitchen test"
 end
 
-desc "Runs foodcritic."
+desc "Run foodcritic."
 task :foodcritic do
-    sh "foodcritic . -I ./foodcritic_rules.rb"
+    sh "foodcritic ."  # runs all built-in foodcritic rules
+    sh "foodcritic . -G -t marchex_base" # marchex-specific rules
 end
 
-desc "Runs rubocop."
+desc "Run rubocop."
 task :rubocop do
     sh "rubocop ."
 end

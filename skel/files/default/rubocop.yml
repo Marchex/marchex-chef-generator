@@ -1,7 +1,3 @@
-AllCops:
-  Exclude:
-    - 'foodcritic_rules.rb'
-
 # Things to ignore
 Metrics/LineLength:
   Enabled: false
