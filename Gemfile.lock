@@ -1,6 +1,5 @@
 GEM
   remote: https://rubygems.org/
-  remote: http://rubygems.sea.marchex.com/
   specs:
     addressable (2.4.0)
     chef-api (0.6.0)
@@ -16,7 +15,7 @@ GEM
     mime-types-data (3.2016.0521)
     multipart-post (2.0.0)
     necromancer (0.3.0)
-    octokit (4.3.1.pre1)
+    octokit (4.4.1)
       sawyer (~> 0.7.0, >= 0.5.3)
     pastel (0.6.1)
       equatable (~> 0.5.0)
@@ -53,7 +52,7 @@ PLATFORMS
 
 DEPENDENCIES
   chef-api
-  octokit (= 4.3.1.pre1)!
+  octokit (>= 4.4.1)
   rspec
   tty-prompt
 
