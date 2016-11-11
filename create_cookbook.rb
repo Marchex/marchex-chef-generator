@@ -52,7 +52,7 @@ end
 cookbook_types = {
   custom_cookbook: {
     description:      "a custom, marchex-specific cookbook",
-    name_regex:       /^(mchx|example)_[a-zA-Z_0-9]+$/,
+    name_regex:       /^(mchx|foo)_[a-zA-Z_0-9]+$/, # "foo_" for throwaway test cookbooks
     name_hint:        "Clear, short, readable cookbook name (MUST begin with 'mchx_' that others will understand (good: mchx_autobot, bad: mchx_ci_asdfsvc)",
     name_error:       "Must be an alphanumeric word without hyphens, beginning in mchx_." },
   environment_cookbook: {
