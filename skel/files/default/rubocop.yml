@@ -1,5 +1,11 @@
 # Things to ignore
-Metrics/LineLength:
+AllCops:
+  Exclude:
+    # these are vendored
+    - cookbooks/**/*
+    - vendor/**/*
+ 
+ Metrics/LineLength:
   Enabled: false
 
 Style/RegexpLiteral:
