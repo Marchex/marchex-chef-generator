@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'mixlib-install', '= 2.1.6'
+gem 'mixlib-install'
 gem 'mixlib-shellout'
 gem 'tty-prompt'
 gem 'chef-api'

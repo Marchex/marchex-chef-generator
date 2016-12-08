@@ -129,7 +129,7 @@ GEM
       mixlib-log
     mixlib-cli (1.7.0)
     mixlib-config (2.2.4)
-    mixlib-install (2.1.6)
+    mixlib-install (2.1.9)
       artifactory
       mixlib-shellout
       mixlib-versioning
@@ -272,7 +272,7 @@ DEPENDENCIES
   inspec
   json
   method_source
-  mixlib-install (= 2.1.6)
+  mixlib-install
   mixlib-shellout
   octokit (>= 4.4.1)
   paint
