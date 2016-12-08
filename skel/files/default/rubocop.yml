@@ -4,8 +4,8 @@ AllCops:
     # these are vendored
     - cookbooks/**/*
     - vendor/**/*
- 
- Metrics/LineLength:
+
+Metrics/LineLength:
   Enabled: false
 
 Style/RegexpLiteral:
