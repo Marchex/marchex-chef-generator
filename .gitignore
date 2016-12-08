@@ -1,3 +1,7 @@
 .chef/*
 !.chef/knife.rb.example
 .idea/
+vendor
+.bundle/*
+!.bundle/config
+cookbooks
