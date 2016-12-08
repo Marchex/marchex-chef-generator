@@ -20,18 +20,15 @@ module MchxChefGen
 #         :strict => true,
 #         :contexts => contexts
 #       },
-      :required_status_checks => nil,
       :restrictions => {
         :users => users,
         :teams => teams
-      }
+      },
+      :accept => 'application/vnd.github.loki-preview+json'
     }
     begin
       client = Octokit::Client.new(:access_token => token, :api_endpoint => endpoint)
-      result = client.protect_branch(org + '/' + repo, branch, data,
-                       {
-                           :accept => 'application/vnd.github.loki-preview+json'
-                       })
+      result = client.protect_branch(org + '/' + repo, branch, data)
     rescue Exception => e
       puts sprintf("ERROR: Unable to protect branch %s on repo %s/%s to team %s", branch, org, repo, teams)
       puts sprintf("ERROR: response from server was: %s", e)
