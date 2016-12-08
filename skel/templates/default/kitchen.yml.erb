@@ -8,7 +8,6 @@ suites:
       - recipe[<%= cookbook_name %>::default]
       - recipe[pop_prod_sad::default]
     attributes:
-      domain: marchex.com  # req for mchx_pkgmanager
     verifier:
       name: inspec
       inspec_tests:
