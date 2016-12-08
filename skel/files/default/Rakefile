@@ -24,7 +24,7 @@ end
 
 desc "Run foodcritic."
 task :foodcritic do
-    sh "foodcritic ."  # runs all built-in foodcritic rules
+    sh "foodcritic ." # runs all built-in foodcritic rules
     sh "foodcritic . -G -t marchex_base" # marchex-specific rules
 end
 
