@@ -58,6 +58,8 @@ remote_directory "#{cookbook_dir}/.delivery" do
   source "delivery-config"
 end
 
+remote_directory "#{cookbook_dir}/.bundle"
+
 cookbook_file "#{cookbook_dir}/.rubocop.yml" do
   source 'rubocop.yml'
   action :create_if_missing
