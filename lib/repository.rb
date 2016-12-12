@@ -26,6 +26,7 @@ module MchxChefGen
         @prompt.say("found repository at #{@repo_url} -- updating it.", color: :bright_yellow)
         MchxChefGen.protect_branch(@token, 'marchex-chef', @name)
         MchxChefGen.set_pre_receive_hook(@token, 'marchex-chef', @name)
+        MchxChefGen.remove_old_hooks(@token, 'marchex-chef', @name)
       else
         @prompt.say("repository doesn't exist at #{@repo_url} -- will not update it.", color: :bright_yellow)
       end

@@ -59,6 +59,30 @@ module MchxChefGen
     result
   end
 
+  def self.remove_old_hooks(token, org, repo,
+      endpoint = @def_endpoint
+  )
+    begin
+      client = Octokit::Client.new(:access_token => token, :api_endpoint => endpoint)
+      hooks = client.hooks(org + '/' + repo)
+      hooks.each do |hook|
+        # we no longer use Delivery webhooks, and old jira1.sea1 hooks
+        # have been replaced by jira.marchex.com hooks.  remove old stuff.
+        # if we get other hooks to remove we can add them to this list.
+        if hook[:config][:url] =~ /\bdelivery\.marchex\.com\b/ ||
+           hook[:config][:url] =~ /\bjira1\.sea1\.marchex\.com\b/
+          client.remove_hook(org + '/' + repo, hook[:id])
+        end
+      end
+
+    rescue Exception => e
+      puts sprintf("ERROR: Unable to remove hooks for repo %s/%s", org, repo)
+      puts sprintf("ERROR: response from server was: %s", e)
+      throw e
+    end
+
+  end
+
   def self.create_repo(token, cookbook,
       endpoint = @def_endpoint,
       org = 'marchex-chef'
