@@ -11,7 +11,7 @@ require_relative 'lib/repository'
 
 launch_screen
 
-unless check_repo_prerequisites
+unless check_github_token
   exit -1
 end
 

@@ -2,6 +2,14 @@ require_relative 'repository'
 
 # Check that we have what we need to create/modify git repo
 def check_repo_prerequisites
+  check_required_commands or return false
+  check_github_token or return false
+  check_delivery_token or return false
+
+  return true
+end
+
+def check_required_commands
   required_commands = %w( curl delivery )
   required_commands.each { |c|
     command_check = Mixlib::ShellOut.new("which #{c}").run_command
@@ -11,11 +19,19 @@ def check_repo_prerequisites
     end
   }
 
+  return true
+end
+
+def check_github_token
   unless ENV['GITHUB_TOKEN']
     puts "GITHUB_TOKEN environment variable not set - can't proceed with repository creation."
     return false
   end
 
+  return true
+end
+
+def check_delivery_token
   # verify that delivery token is valid
   begin
     shell_command("delivery token --verify --server #{delivery_server}")
