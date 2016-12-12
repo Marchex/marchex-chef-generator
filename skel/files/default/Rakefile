@@ -35,8 +35,8 @@ end
 
 desc "Run validation tests."
 task :lint do
-  Rake::Task[:foodcritic].execute
   Rake::Task[:rubocop].execute
+  Rake::Task[:foodcritic].execute
 end
 
 desc "Run unit tests."
