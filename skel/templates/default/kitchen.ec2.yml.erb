@@ -5,7 +5,6 @@
 suites:
   - name: default
     run_list:
-      - recipe[hostname::default]
       - recipe[<%= cookbook_name %>::default]
       - recipe[pop_prod_aws_us_west_2_vpc2::default]
     attributes:
