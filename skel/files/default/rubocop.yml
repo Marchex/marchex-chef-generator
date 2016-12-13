@@ -3,7 +3,7 @@ AllCops:
   Exclude:
     # these are vendored
     - cookbooks/**/*
-    - vendor/**/*
+    - .vendor/**/*
 
 Metrics/LineLength:
   Enabled: false
