@@ -5,6 +5,7 @@
 suites:
   - name: default
     run_list:
+      - recipe[set_hostname::default]
       - recipe[<%= cookbook_name %>::default]
       - recipe[pop_prod_sad::default]
     attributes:
