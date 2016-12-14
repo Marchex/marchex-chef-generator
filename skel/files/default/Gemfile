@@ -1,18 +1,18 @@
 source 'https://rubygems.org'
 
-gem 'rake'
 gem 'berkshelf'
 gem 'marchex_helpers', '>= 0.1.21', source: 'http://rubygems.sea.marchex.com/'
+gem 'rake'
 
 group :development do
+  gem 'chefspec'
   gem 'foodcritic'
   gem 'rubocop'
-  gem 'chefspec'
 end
 
 group :integration do
   gem 'kitchen-ec2'
   gem 'kitchen-inspec'
-  gem 'test-kitchen'
   gem 'kitchen-vagrant'
+  gem 'test-kitchen'
 end
