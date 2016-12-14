@@ -7,30 +7,28 @@ task :list do
     puts "Tasks: \n- #{Rake::Task.tasks.join("\n- ")}"
 end
 
-desc "Check for required dependencies."
+desc "Check for (and resolve) required dependencies."
 task :check do
-  sh "bundle check"
+  sh "bundle check || bundle install"
 end
 
 desc "Run chefspec tests."
 task :chefspec do
-    sh "rspec spec"
-end
-
-desc "Run kitchen tests."
-task :kitchen do
-    sh "kitchen test"
+    Rake::Task[:check].execute
+    sh "bundle exec rspec spec"
 end
 
 desc "Run foodcritic."
 task :foodcritic do
-    sh "foodcritic ." # runs all built-in foodcritic rules
-    sh "foodcritic . -G -t marchex_base" # marchex-specific rules
+    Rake::Task[:check].execute
+    sh "bundle exec foodcritic ." # runs all built-in foodcritic rules
+    sh "bundle exec foodcritic . -G -t marchex_base" # marchex-specific rules
 end
 
 desc "Run rubocop."
 task :rubocop do
-    sh "rubocop ."
+    Rake::Task[:check].execute
+    sh "bundle exec rubocop ."
 end
 
 desc "Run validation tests."
@@ -45,24 +43,12 @@ task :unit do
   Rake::Task[:chefspec].execute
 end
 
-desc "Run integration tests."
-task :integration do
-  Rake::Task[:chefspec].execute
-  Rake::Task[:kitchen].execute
-end
-
 desc "Run delivery verify tests."
 task :dverify do
   sh "delivery job -l verify 'unit lint syntax'"
 end
 
-desc "Run delivery verify tests."
-task :dkitchen do
-  sh "delivery job -l acceptance functional"
-end
-
-desc "Run delivery verify tests."
+desc "Run delivery tests."
 task :delivery do
   Rake::Task[:dverify].execute
-  Rake::Task[:dkitchen].execute
 end
