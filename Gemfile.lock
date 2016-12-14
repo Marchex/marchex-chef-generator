@@ -274,7 +274,7 @@ DEPENDENCIES
   method_source
   mixlib-install
   mixlib-shellout
-  octokit (>= 4.4.1)
+  octokit (>= 4.6.0)
   paint
   parallel
   pry
