@@ -30,6 +30,11 @@ cookbook_file "#{cookbook_dir}/Gemfile" do
   action :create_if_missing
 end
 
+# Jenkinsfile
+cookbook_file "#{cookbook_dir}/Jenkinsfile" do
+  action :create_if_missing
+end
+
 # Rakefile
 cookbook_file "#{cookbook_dir}/Rakefile"
 
