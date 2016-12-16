@@ -7,8 +7,6 @@ require_relative 'lib/migrate'
 require_relative 'lib/octo_wrapper'
 require_relative 'lib/repository'
 
-puts "Cannot create cookbooks currently, migration in progress"
-exit -1
 
 launch_screen
 
