@@ -4,10 +4,19 @@ Create skeletons of recipes/cookbooks/etc. that include Marchex-specific pattern
 # Install development kit
 Please install [mchx_dk](https://github.marchex.com/marchex-chef/mchx_dk) first.
 
-# creating a new cookbook
+# Token
+You need to use an API token (set in `GITHUB_TOKEN` environment variable) with the "repo" and "admin:pre_receive_hook" [scopes](https://github.marchex.com/settings/tokens) set.
+
+# Creating a new cookbook
 Run 
 ```
 `./create_cookbook.rb`
+```
+
+# Updating a new cookbook
+To update an existing cookbook's GitHub settings for branch protection, run
+```
+`./update_cookbook.rb`
 ```
 
 # Migrating an existing environment or role

@@ -6,6 +6,7 @@
   },
   "skip_phases": [
     "deploy",
+    "functional",
     "quality",
     "security",
     "smoke"

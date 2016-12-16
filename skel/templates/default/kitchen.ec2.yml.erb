@@ -1,14 +1,14 @@
 ---
 #<%% require 'marchex_helpers' %>
-<%%= MarchexHelpers.kitchen( driver: :ec2, platforms: [:supported] ) %>
+<%%= MarchexHelpers.kitchen( driver: :ec2, platforms: [:supported_vms] ) %>
 
 suites:
   - name: default
     run_list:
+      - recipe[set_hostname::default]
       - recipe[<%= cookbook_name %>::default]
       - recipe[pop_prod_aws_us_west_2_vpc2::default]
     attributes:
-      domain: marchex.com  # req for mchx_pkgmanager
     verifier:
       name: inspec
       inspec_tests:

@@ -98,3 +98,5 @@ Vagrantfile
 # Travis #
 ##########
 .travis.yml
+
+.vendor

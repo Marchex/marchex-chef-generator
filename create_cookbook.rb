@@ -1,58 +1,22 @@
 #!/usr/bin/env ruby
 require 'tty-prompt'
 require 'mixlib/shellout'
+require_relative 'lib/cli'
 require_relative 'lib/launch_screen'
 require_relative 'lib/migrate'
 require_relative 'lib/octo_wrapper'
 require_relative 'lib/repository'
 
+puts "Cannot create cookbooks currently, migration in progress"
+exit -1
+
 launch_screen
-
-# Check that we have what we need to create/modify git repo
-def check_repo_prerequisites
-  required_commands = %w( curl delivery )
-  required_commands.each { |c|
-    command_check = Mixlib::ShellOut.new("which #{c}").run_command
-    if(command_check.exitstatus != 0)
-      puts "Missing required command #{c}"
-      return false
-    end
-  }
-
-  unless ENV['GITHUB_TOKEN']
-    puts "GITHUB_TOKEN environment variable not set - can't proceed with repository creation."
-    return false
-  end
-
-  # verify that delivery token is valid
-  begin
-    shell_command("delivery token --verify")
-  rescue
-    prompt = TTY::Prompt.new
-    prompt.say("DELIVERY TOKEN not set in ~/.delivery/api-tokens")
-    prompt.say("execute 'delivery token --verify' to reset your token.", color: :bright_yellow)
-
-    return false
-  end
-
-  return true
-end
-
-# Run command and display stdout/stderr if exit code is not zero
-# pass in cwd if you want the command to be executed somewhere other than the current directory
-def shell_command(command, cwd=nil)
-  puts "Running command: #{command}"
-  cmd = Mixlib::ShellOut.new(command, :cwd => cwd)
-  cmd.run_command
-  cmd.error! # Display stdout if exit code was non-zero
-  cmd.exitstatus
-end
 
 # Cookbook type metadata
 cookbook_types = {
   custom_cookbook: {
     description:      "a custom, marchex-specific cookbook",
-    name_regex:       /^mchx_[a-zA-Z_0-9]+$/,
+    name_regex:       /^(mchx|foo)_[a-zA-Z_0-9]+$/, # "foo_" for throwaway test cookbooks
     name_hint:        "Clear, short, readable cookbook name (MUST begin with 'mchx_' that others will understand (good: mchx_autobot, bad: mchx_ci_asdfsvc)",
     name_error:       "Must be an alphanumeric word without hyphens, beginning in mchx_." },
   environment_cookbook: {
@@ -104,7 +68,7 @@ end
 prompt.say(cookbook_types[cookbook_type][:name_hint], color: :bright_yellow)
 
 # Get cookbook name and validate that it meets guidelines
-cookbook_name = prompt.ask('cookbook name: ') do |q|
+cookbook_name = prompt.ask('cookbook name to create: ') do |q|
   q.required true
   q.modify :down, :trim # lowercase input and trim trailing/leading whitespace
   q.validate(cookbook_types[cookbook_type][:name_regex], cookbook_types[cookbook_type][:name_error])

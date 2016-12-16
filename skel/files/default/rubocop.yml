@@ -3,9 +3,9 @@ AllCops:
   Exclude:
     # these are vendored
     - cookbooks/**/*
-    - vendor/**/*
- 
- Metrics/LineLength:
+    - .vendor/**/*
+
+Metrics/LineLength:
   Enabled: false
 
 Style/RegexpLiteral:
