@@ -6,8 +6,5 @@ node('master') {
         'https://github.marchex.com/marchex-chef/groovy_chef_jerbs.git', 'master', null, '')
 
     jerbs.all_the_jerbs()
-    if (currentBuild.result == null) {
-        currentBuild.result = 'SUCCESS'
-    }
  }
  
