@@ -45,7 +45,23 @@ end
 
 desc "Run delivery verify tests."
 task :dverify do
-  sh "delivery job -l verify 'unit lint syntax'"
+  verbose(false) do
+    sh <<-EOS
+    changes="$(git status --porcelain)";
+    if [[ ! -z "$changes" ]]; then
+      echo $'You have uncommitted changes:\n' $changes $'\n';
+      while true; do
+        read -p "Continue? [yN] " yn
+        case $yn in
+          [Yy]* ) break;;
+          * ) exit;;
+        esac
+      done
+    echo delivery job -l verify 'syntax lint unit'
+    delivery job -l verify 'syntax lint unit'
+    fi
+    EOS
+  end
 end
 
 desc "Run delivery tests."
