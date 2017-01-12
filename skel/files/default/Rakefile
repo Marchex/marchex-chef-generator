@@ -57,9 +57,9 @@ task :dverify do
           * ) exit;;
         esac
       done
+    fi
     echo delivery job -l verify 'syntax lint unit'
     delivery job -l verify 'syntax lint unit'
-    fi
     EOS
   end
 end
