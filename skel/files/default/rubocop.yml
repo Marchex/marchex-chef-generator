@@ -30,12 +30,19 @@ Style/SpaceInsideParens:
 Style/StringLiterals:
   Enabled: false
 
+# Don't care about these for tests
 Performance/Count:
   Exclude:
-    # Don't care about this for tests
     - 'spec/unit/recipes/*.rb'
 
 Style/AlignParameters:
   Exclude:
-    # Don't care about this for tests
+    - 'spec/unit/recipes/*.rb'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/unit/recipes/*.rb'
+
+Metrics/MethodLength:
+  Exclude:
     - 'spec/unit/recipes/*.rb'
