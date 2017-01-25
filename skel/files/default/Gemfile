@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'berkshelf'
-gem 'marchex_helpers', '>= 0.1.21', source: 'http://rubygems.sea.marchex.com/'
+gem 'marchex_helpers', '>= 0.1.24', source: 'http://rubygems.sea.marchex.com/'
 gem 'rake'
 
 group :development do
