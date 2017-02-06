@@ -4,6 +4,9 @@
     "name": "build-cookbook",
     "path": ".delivery/build-cookbook"
   },
+  "job_dispatch": {
+    "version": "v2"
+  },
   "skip_phases": [
     "deploy",
     "functional",
@@ -11,7 +14,6 @@
     "security",
     "smoke"
   ],
-  "build_nodes": {},
   "dependencies": [],
   "delivery-truck": {
     "publish": {
