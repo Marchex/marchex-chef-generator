@@ -13,6 +13,14 @@ Run
 `./create_cookbook.rb`
 ```
 
+This script *must* be used for creating new cookbooks.  It does a lot for us, including (but not limited to):
+* Creates cookbook with the right name, files, and content (and there's a lot)
+* Creates repo in GitHub
+* Sets up branch protection and other settings in GitHub
+* Pushes repo to GitHub
+* Sets up repo in Delivery
+* Creates and sets up inspec test repo
+
 # Updating a new cookbook
 To update an existing cookbook's GitHub settings for branch protection, run
 ```
