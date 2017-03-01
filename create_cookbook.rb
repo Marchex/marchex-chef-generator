@@ -103,3 +103,9 @@ end
 
 prompt.say("Cookbook initialized! Now, `cd #{@ckbkrepo.get_repodir}` and run 'rake unit' to run tests.
 And `cd #{@inspecrepo.get_repodir}` to run and modify integration tests.", color: :bright_green)
+
+# yeah, we should have a better CNAME/port ... and ideally, we should be able to
+# re-scan automatically
+prompt.say("NOTE: Jenkins will not pick up the new cookbook until you re-scan the org, at:
+  http://jenkins1.aws-us-west-2-vpc2.marchex.com:8080/job/CHEF/computation/
+", color: :red)
