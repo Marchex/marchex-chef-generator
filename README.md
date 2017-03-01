@@ -18,7 +18,6 @@ This script **must** be used for creating new cookbooks.  It does a lot for us, 
 * Creates repo in GitHub
 * Sets up branch protection and other settings in GitHub
 * Pushes repo to GitHub
-* Sets up repo in Delivery
 * Creates and sets up inspec test repo
 
 # Updating a new cookbook
@@ -30,8 +29,3 @@ To update an existing cookbook's GitHub settings for branch protection, run
 # Migrating an existing environment or role
 1. First, acquire the readonly.pem chef key from the Tools team and place it in ~/.chef/readonly.pem
 2. Run `./create_cookbook.rb` and follow the prompts, selecting environment/role cookbook and 'yes' when prompted to migrate an existing environment/role, then follow the prompts.
-
-# Manually Refreshing a Delivery token
-```
-delivery token --ent marchex --user $USER --server delivery.marchex.com --verify
-```

@@ -42,29 +42,3 @@ task :unit do
   Rake::Task[:lint].execute
   Rake::Task[:chefspec].execute
 end
-
-desc "Run delivery verify tests."
-task :dverify do
-  verbose(false) do
-    sh <<-EOS
-    changes="$(git status --porcelain)";
-    if [[ ! -z "$changes" ]]; then
-      echo $'You have uncommitted changes:\n' $changes $'\n';
-      while true; do
-        read -p "Continue? [yN] " yn
-        case $yn in
-          [Yy]* ) break;;
-          * ) exit;;
-        esac
-      done
-    fi
-    echo delivery job -l verify 'syntax lint unit'
-    delivery job -l verify 'syntax lint unit'
-    EOS
-  end
-end
-
-desc "Run delivery tests."
-task :delivery do
-  Rake::Task[:dverify].execute
-end
