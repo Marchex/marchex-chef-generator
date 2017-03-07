@@ -1,10 +1,6 @@
 require 'fileutils'
 require 'tty-prompt'
 
-def delivery_server
-  'delivery.marchex.com'
-end
-
 module MchxChefGen
   class Repository
     def initialize(cookbook_name, rel_path = 'cookbooks', basedir = nil)
@@ -55,12 +51,6 @@ module MchxChefGen
           # Set up master branch protection rules
           MchxChefGen.protect_branch(@token, 'marchex-chef', @name)
           MchxChefGen.set_pre_receive_hook(@token, 'marchex-chef', @name)
-          # Add project to delivery server
-          shell_command("delivery init --repo-name #{@name} --github marchex-chef --server #{delivery_server} --ent marchex --org marchex --skip-build-cookbook --user #{ENV['USER']} --no-open", @name)
-          # Push delivery pipeline branch and prompt user to create a PR
-          shell_command("git push origin initialize-delivery-pipeline", @name)
-          @prompt.say("Please go to #{@repo_url}/compare/initialize-delivery-pipeline?expand=1 and create a pull request.", color: :bright_green)
-
         end
         relocate_repo
 

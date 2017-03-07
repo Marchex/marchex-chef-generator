@@ -59,10 +59,6 @@ directory "#{cookbook_dir}/test/data_bags" do
   recursive true
 end
 
-remote_directory "#{cookbook_dir}/.delivery" do
-  source "delivery-config"
-end
-
 remote_directory "#{cookbook_dir}/.bundle"
 
 cookbook_file "#{cookbook_dir}/.rubocop.yml" do

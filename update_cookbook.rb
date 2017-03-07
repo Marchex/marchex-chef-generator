@@ -22,9 +22,12 @@ answers = Hash.new { |h, k| h[k] = { } }
 prompt = TTY::Prompt.new
 
 # Get cookbook name
-cookbook_name = prompt.ask('cookbook name to update: ') do |q|
-  q.required true
-  q.modify :down, :trim # lowercase input and trim trailing/leading whitespace
+cookbook_name = ARGV[0]
+if !cookbook_name
+  cookbook_name = prompt.ask('cookbook name to update: ') do |q|
+    q.required true
+    q.modify :down, :trim # lowercase input and trim trailing/leading whitespace
+  end
 end
 
 @ckbkrepo = MchxChefGen::Repository.new(cookbook_name)
