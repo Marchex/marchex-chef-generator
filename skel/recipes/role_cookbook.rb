@@ -16,6 +16,12 @@ else
     helpers(ChefDK::Generator::TemplateHelper)
     action :create_if_missing
   end
+
+  # default cookbook dependencies
+  ChefDK::Generator.add_attr_to_context(:role_cookbook_dependencies, [
+    { :cookbook_name => 'role_base', :recipe_name => 'default' },
+    { :cookbook_name => 'mchx_pulley_client', :recipe_name => 'default' }
+  ])
 end
 
 # overwrite default recipe with environment-specific one.

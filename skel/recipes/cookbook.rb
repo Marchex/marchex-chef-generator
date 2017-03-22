@@ -115,4 +115,4 @@ end
 
 include_recipe 'skel::chef-vault_examples' if ( defined?(context.include_chef_vault_examples) && (context.include_chef_vault_examples == 'true') )
 include_recipe 'skel::environment_cookbook' if ( defined?(context.cookbook_type) && (context.cookbook_type == 'environment_cookbook') )
-include_recipe 'skel::role_cookbook' if ( defined?(context.cookbook_type) && (context.cookbook_type == 'role_cookbook') )
+include_recipe 'skel::role_cookbook' if ( defined?(context.cookbook_type) && (context.cookbook_type == 'hostclass_cookbook') )

@@ -5,9 +5,12 @@
 <%= license_description('#') %>
 ### Put ONLY include_recipe lines in this file      ###
 #                                                     #
-# Role cookbooks exist ONLY to set attributes         #
+# Hostclass cookbooks exist ONLY to set attributes    #
 # in attributes/default.rb and use include_recipe     #
 # directives to pull in other recipes.                #
+#                                                     #
+# All hostclass cookbooks require role_base[default], #
+# and most will require mchx_pulley_client[default].  #
 #                                                     #
 ### Put ONLY include_recipe lines in this file      ###
 <% if defined?(role_cookbook_dependencies) -%>
