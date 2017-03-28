@@ -22,6 +22,15 @@ else
     { :cookbook_name => 'role_base', :recipe_name => 'default' },
     { :cookbook_name => 'mchx_pulley_client', :recipe_name => 'default' }
   ])
+
+  # escrow certs for mchx_pulley_client
+  directory "#{cookbook_dir}/test/integration/data_bags/escrow" do
+    recursive true
+  end
+
+  cookbook_file "#{cookbook_dir}/test/integration/data_bags/escrow/certificates.json" do
+    source "escrow_certificates.json"
+  end
 end
 
 # overwrite default recipe with environment-specific one.
