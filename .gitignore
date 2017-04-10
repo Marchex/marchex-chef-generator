@@ -1,5 +1,4 @@
 .chef/*
-!.chef/knife.rb.example
 .idea/
 -.bundle/*
 -!.bundle/config
