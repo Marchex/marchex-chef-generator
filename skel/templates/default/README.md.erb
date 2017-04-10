@@ -10,11 +10,7 @@ Here's an example of creating a vault entry with the required attributes using k
 
 TODO: Update with valid entries for your cookbook/recipe.
 
-  knife vault create <%= cookbook_name %> db_credentials '{ "username": "foo", "password": "bar" }'
-  -S "role:my-awesome-role"
-
-In order to ensure that you give access to this vault to other chef server admins, make sure that you've performed the
-steps [on the wiki](http://wiki.marchex.com/index.php/Setting_up_knife#Install_and_test_the_Marchex-specific_chef_templates_and_rules)
+  knife vault create <%= cookbook_name %> db_credentials '{ "username": "foo", "password": "bar" }' -S "role:my-awesome-role"
 
 The -S argument is the standard chef SOLR search for clients (e.g. fqdn:foo.marchex.com). To see which nodes will match
 a given string, do a knife search node "<search string>" with the same argument. Each node returned from the search

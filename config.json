@@ -1,6 +1,6 @@
 {
   "old_chef_server": {
-    "endpoint": "https://api.opscode.com/organizations/marchex",
+    "endpoint": "https://chef.marchex.com/organizations/outhouse",
     "client": "readonly",
     "key": "~/.chef/readonly.pem"
   }
