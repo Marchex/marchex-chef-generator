@@ -17,6 +17,12 @@ template "#{cookbook_dir}/README.md" do
   action :create_if_missing
 end
 
+# INSTALL
+template "#{cookbook_dir}/LICENSE" do
+  source "LICENSE.all_rights.erb"
+  helpers(ChefDK::Generator::TemplateHelper)
+end
+
 # chefignore
 cookbook_file "#{cookbook_dir}/chefignore"
 
