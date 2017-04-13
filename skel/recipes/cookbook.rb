@@ -72,6 +72,11 @@ cookbook_file "#{cookbook_dir}/.rubocop.yml" do
   action :create_if_missing
 end
 
+cookbook_file "#{cookbook_dir}/.foodcritic" do
+    source "foodcritic"
+    action :create_if_missing
+end
+
 cookbook_file "#{cookbook_dir}/test/shared/vagrant_cache_omnibus.rb" do
   action :create_if_missing
 end
