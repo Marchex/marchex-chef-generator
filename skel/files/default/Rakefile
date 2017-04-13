@@ -17,6 +17,16 @@ task :update do
   sh "bundle update"
 end
 
+desc "Update rubocop and foodcritic configs from GitHub."
+task :"lint-update" do
+    sh "curl --fail --silent --connect-timeout 2 --max-time 5 -o .rubocop.yml\
+         'https://github.marchex.com/raw/marchex-chef/marchex-chef-generator/master/skel/files/default/rubocop.yml'\
+       || echo 'Failed to update Rubocop config.'"
+    sh "curl --fail --silent --connect-timeout 2 --max-time 5 -o .foodcritic\
+        'https://github.marchex.com/raw/marchex-chef/marchex-chef-generator/master/skel/files/default/foodcritic'
+       || echo 'Failed to update Foodcritic config.'"
+end
+
 desc "Run chefspec tests."
 task :chefspec do
   Rake::Task[:check].execute
@@ -38,6 +48,7 @@ end
 
 desc "Run validation tests."
 task :lint do
+  Rake::Task[:"lint-update"].execute
   Rake::Task[:rubocop].execute
   Rake::Task[:foodcritic].execute
 end
