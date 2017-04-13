@@ -12,6 +12,11 @@ task :check do
   sh "bundle check || bundle install"
 end
 
+desc "Bundle update."
+task :update do
+  sh "bundle update"
+end
+
 desc "Run chefspec tests."
 task :chefspec do
     Rake::Task[:check].execute
