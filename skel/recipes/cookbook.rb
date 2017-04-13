@@ -43,6 +43,7 @@ end
 
 # Rakefile
 cookbook_file "#{cookbook_dir}/Rakefile"
+cookbook_file "#{cookbook_dir}/base.rake"
 
 # TK & Serverspec
 template "#{cookbook_dir}/.kitchen.yml" do
