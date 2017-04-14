@@ -46,3 +46,12 @@ Metrics/BlockLength:
 Metrics/MethodLength:
   Exclude:
     - 'spec/unit/recipes/*.rb'
+
+Style/PercentLiteralDelimiters:
+  Enabled: false
+
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: false

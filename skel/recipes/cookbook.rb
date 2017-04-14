@@ -43,6 +43,7 @@ end
 
 # Rakefile
 cookbook_file "#{cookbook_dir}/Rakefile"
+cookbook_file "#{cookbook_dir}/base.rake"
 
 # TK & Serverspec
 template "#{cookbook_dir}/.kitchen.yml" do
@@ -70,6 +71,11 @@ remote_directory "#{cookbook_dir}/.bundle"
 cookbook_file "#{cookbook_dir}/.rubocop.yml" do
   source 'rubocop.yml'
   action :create_if_missing
+end
+
+cookbook_file "#{cookbook_dir}/.foodcritic" do
+    source "foodcritic"
+    action :create_if_missing
 end
 
 cookbook_file "#{cookbook_dir}/test/shared/vagrant_cache_omnibus.rb" do
