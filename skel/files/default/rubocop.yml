@@ -33,19 +33,23 @@ Style/StringLiterals:
 # Don't care about these for tests
 Performance/Count:
   Exclude:
-    - 'spec/unit/recipes/**/*.rb'
+    - 'spec/**/*.rb'
 
 Style/AlignParameters:
   Exclude:
-    - 'spec/unit/recipes/**/*.rb'
+    - 'spec/**/*.rb'
 
 Metrics/BlockLength:
   Exclude:
-    - 'spec/unit/recipes/**/*.rb'
+    - 'spec/**/*.rb'
 
 Metrics/MethodLength:
   Exclude:
-    - 'spec/unit/recipes/**/*.rb'
+    - 'spec/**/*.rb'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'spec/**/*rb'
 
 Style/PercentLiteralDelimiters:
   Enabled: false
