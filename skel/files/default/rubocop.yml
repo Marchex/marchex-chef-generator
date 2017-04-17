@@ -34,22 +34,27 @@ Style/StringLiterals:
 Performance/Count:
   Exclude:
     - 'spec/**/*.rb'
+    - 'test/**/*.rb'
 
 Style/AlignParameters:
   Exclude:
     - 'spec/**/*.rb'
+    - 'test/**/*.rb'
 
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
+    - 'test/**/*.rb'
 
 Metrics/MethodLength:
   Exclude:
     - 'spec/**/*.rb'
+    - 'test/**/*.rb'
 
 Metrics/AbcSize:
   Exclude:
     - 'spec/**/*rb'
+    - 'test/**/*rb'
 
 Style/PercentLiteralDelimiters:
   Enabled: false
