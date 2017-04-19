@@ -79,6 +79,7 @@ task :clean do
   Rake::Task[:"config-update"].execute
   # only delete lockfiles if they are not in git
   sh <<-eos, verbose: false
+  bash
   lockfiles_to_delete=("Berksfile.lock" "Gemfile.lock")
   for lockfile in ${lockfiles_to_delete[@]}
   do
