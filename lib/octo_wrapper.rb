@@ -109,4 +109,18 @@ module MchxChefGen
     end
   end
 
+  def self.get_ref(token, repo, ref,
+      endpoint = @def_endpoint,
+      org = 'marchex-chef'
+  )
+    begin
+      client = Octokit::Client.new(:access_token => token, :api_endpoint => endpoint)
+      client.ref(org + '/' + repo, ref)
+
+    rescue Exception => e
+      puts sprintf("ERROR: Unable to fetch ref %s from repo %s/%s", ref, org, repo)
+      puts sprintf("ERROR: response from server was: %s", e)
+      throw e
+    end
+  end
 end
