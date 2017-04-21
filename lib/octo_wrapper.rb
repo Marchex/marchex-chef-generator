@@ -18,12 +18,7 @@ module MchxChefGen
         :strict => true,
         :contexts => contexts
       },
-# this doesn't appear to work yet, but will be required in a future version
-# of GitHub.  pass nil to disable, or the object with "include_admins" to enable.
-# https://developer.github.com/v3/repos/branches/#update-branch-protection
-#       :required_pull_request_reviews => {
-#         :include_admins => true
-#       },
+      :required_pull_request_reviews => nil,
       :restrictions => nil,
       :accept => 'application/vnd.github.loki-preview+json'
     }
