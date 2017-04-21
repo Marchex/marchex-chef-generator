@@ -1,5 +1,8 @@
 require_relative 'repository'
 
+# make sure in proper directory
+Dir.chdir( File.expand_path(File.dirname(__FILE__) + '/..') )
+
 # Check that we have what we need to create/modify git repo
 def check_repo_prerequisites
   check_required_commands or return false
@@ -8,7 +11,6 @@ def check_repo_prerequisites
 
   return true
 end
-
 
 def check_repo_updated
   repo = 'marchex-chef-generator'
