@@ -1,9 +1,33 @@
 require_relative 'repository'
 
+# make sure in proper directory
+Dir.chdir( File.expand_path(File.dirname(__FILE__) + '/..') )
+
 # Check that we have what we need to create/modify git repo
 def check_repo_prerequisites
   check_required_commands or return false
   check_github_token or return false
+  check_repo_updated or return false
+
+  return true
+end
+
+def check_repo_updated
+  repo = 'marchex-chef-generator'
+  # get remote's master/HEAD sha
+  remote_sha = MchxChefGen.get_ref(ENV['GITHUB_TOKEN'], repo, 'heads/master').object.sha
+  # get local branches whose HEAD contains sha
+  sha_contained = Mixlib::ShellOut.new("git branch --contains #{remote_sha}").run_command
+
+  # sha not found
+  if sha_contained.error!
+    puts "Remote #{repo} repository has been been changed. Update local repository before continuing."
+    exit -1
+  # sha exists locally, but not in the HEAD of the current branch
+  elsif sha_contained.stdout !~ /^\* /
+    puts "Local branch does not include latest code from remote #{repo} repository. Rebase or merge local repository before continuing."
+    exit -1
+  end
 
   return true
 end

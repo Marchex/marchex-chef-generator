@@ -18,12 +18,7 @@ module MchxChefGen
         :strict => true,
         :contexts => contexts
       },
-# this doesn't appear to work yet, but will be required in a future version
-# of GitHub.  pass nil to disable, or the object with "include_admins" to enable.
-# https://developer.github.com/v3/repos/branches/#update-branch-protection
-#       :required_pull_request_reviews => {
-#         :include_admins => true
-#       },
+      :required_pull_request_reviews => nil,
       :restrictions => nil,
       :accept => 'application/vnd.github.loki-preview+json'
     }
@@ -109,4 +104,18 @@ module MchxChefGen
     end
   end
 
+  def self.get_ref(token, repo, ref,
+      endpoint = @def_endpoint,
+      org = 'marchex-chef'
+  )
+    begin
+      client = Octokit::Client.new(:access_token => token, :api_endpoint => endpoint)
+      client.ref(org + '/' + repo, ref)
+
+    rescue Exception => e
+      puts sprintf("ERROR: Unable to fetch ref %s from repo %s/%s", ref, org, repo)
+      puts sprintf("ERROR: response from server was: %s", e)
+      throw e
+    end
+  end
 end
